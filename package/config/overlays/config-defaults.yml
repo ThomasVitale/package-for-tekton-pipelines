@@ -1,0 +1,34 @@
+#@ load("@ytt:data", "data")
+#@ load("@ytt:overlay", "overlay")
+
+#@overlay/match by=overlay.subset({"kind": "ConfigMap", "metadata":{"name":"config-defaults"}}),expects=1
+#@overlay/match-child-defaults missing_ok=True
+---
+data:
+
+  #@overlay/remove
+  _example:
+
+  #@ if/end data.values.defaults.timeout_minutes:
+  default-timeout-minutes: #@ data.values.defaults.timeout_minutes
+
+  #@ if/end data.values.defaults.service_account:
+  default-service-account: #@ data.values.defaults.service_account
+
+  #@ if/end data.values.defaults.managed_by_label_value:
+  default-managed-by-label-value: #@ data.values.defaults.managed_by_label_value
+
+  #@ if/end data.values.defaults.pod_template:
+  default-pod-template: #@ data.values.defaults.pod_template
+
+  #@ if/end data.values.defaults.affinity_assistant_pod_template:
+  default-affinity-assistant-pod-template: #@ data.values.defaults.affinity_assistant_pod_template
+
+  #@ if/end data.values.defaults.cloud_events_sink:
+  default-cloud-events-sink: #@ data.values.defaults.cloud_events_sink
+
+  #@ if/end data.values.defaults.task_run_workspace_binding:
+  default-task-run-workspace-binding: #@ data.values.defaults.task_run_workspace_binding
+
+  #@ if/end data.values.defaults.max_matrix_combinations_count:
+  default-max-matrix-combinations-count: #@ data.values.defaults.max_matrix_combinations_count

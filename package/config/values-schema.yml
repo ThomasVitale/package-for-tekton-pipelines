@@ -1,0 +1,60 @@
+#@data/values-schema
+---
+
+#@schema/desc "Default configuration stored in the config-defaults ConfigMap."
+defaults:
+  #@schema/desc "Number of minutes to use for TaskRun and PipelineRun, if none is specified."
+  timeout_minutes: "60"
+  
+  #@schema/desc "Service account name to use for TaskRun and PipelineRun, if none is specified."
+  service_account: "default"
+  
+  #@schema/desc "Value given to the 'app.kubernetes.io/managed-by' label applied to all Pods created for TaskRuns."
+  managed_by_label_value: "tekton-pipelines"
+
+  #@schema/desc "Pod template to use for TaskRun and PipelineRun."
+  pod_template: ""
+  
+  #@schema/desc "Pod template to use for affinity assistant pods."
+  affinity_assistant_pod_template: ""
+
+  #@schema/desc "CloudEvents sink to be used for TaskRun and PipelineRun. If no sink is specified, no CloudEvent is generated."
+  cloud_events_sink: ""
+  
+  #@schema/desc "Workspace configuration provided for any Workspaces that a Task declares but that a TaskRun does not explicitly provide."
+  #@schema/examples ("Use emptyDir volume for workspace", "emptyDir: {}")
+  task_run_workspace_binding: ""
+  
+  #@schema/desc "Maximum number of combinations from a Matrix, if none is specified."
+  max_matrix_combinations_count: "256"
+
+#@schema/desc "Feature flags configuration stored in the feature-flags ConfigMap."
+feature_flags:
+
+  #@schema/desc "Setting this flag to 'true' will prevent Tekton to create an Affinity Assistant for every TaskRun sharing a PVC workspace."
+  disable_affinity_assistant: "false"
+
+  #@schema/desc "Setting this flag to 'true' will prevent Tekton scanning attached service accounts and injecting any credentials it finds into your Steps."
+  disable_creds_init: "false"
+
+  #@schema/desc "Setting this flag to 'false' will stop Tekton from waiting for a TaskRun's sidecar containers to be running before starting the first step. This will allow Tasks to be run in environments that don't support the DownwardAPI volume type, but may lead to unintended behaviour if sidecars are used."
+  await_sidecar_readiness: "true"
+
+  #@schema/desc "This option should be set to 'false' when Pipelines is running in a cluster that does not use injected sidecars such as Istio. Setting it to false should decrease the time it takes for a TaskRun to start running. For clusters that use injected sidecars, setting this option to false can lead to unexpected behavior."
+  running_in_environment_with_injected_sidecars: "true"
+
+  #@schema/desc "Setting this flag to 'true' will require that any Git SSH Secret offered to Tekton must have known_hosts included."
+  require_git_ssh_secret_known_hosts: "false"
+
+  #@schema/desc "Setting this flag to 'true' enables the use of Tekton OCI bundle. This is an experimental feature and thus should still be considered an alpha feature."
+  enable_tekton_oci_bundles: "false"
+
+  #@schema/desc "Setting this flag to 'true' enables the use of custom tasks from within pipelines. This is an experimental feature and thus should still be considered an alpha feature."
+  enable_custom_tasks: "false"
+
+  #@schema/desc "Setting this flag will determine which gated features are enabled."
+  #@schema/validation one_of=["stable", "alpha"]
+  enable_api_fields: "stable"
+
+  #@schema/desc "Setting this flag to 'true' enables CloudEvents for Runs, as long as a CloudEvents sink is configured in the config-defaults config map."
+  send_cloudevents_for_runs: "false"

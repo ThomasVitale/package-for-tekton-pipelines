@@ -1,0 +1,13 @@
+apiVersion: vendir.k14s.io/v1alpha1
+directories:
+- contents:
+  - githubRelease:
+      disableAutoChecksumValidation: true
+      slug: tektoncd/pipeline
+      tag: v0.40.0
+    includePaths:
+    - release.yaml
+    path: .
+  path: config/upstream
+kind: Config
+minimumRequiredVersion: ""
