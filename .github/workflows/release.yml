@@ -35,6 +35,8 @@ jobs:
       
       - name: Create k3d cluster
         run: |
+          # Initialize brew because of https://github.com/actions/runner-images/issues/6283
+          eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
           brew install k3d
           k3d cluster create test-cluster --image rancher/k3s:v1.24.6-rc1-k3s1
 
