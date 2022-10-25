@@ -34,7 +34,6 @@ jobs:
         uses: vmware-tanzu/carvel-setup-action@v1.1.1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          kctrl: v0.41.0
 
       - name: Create k3d cluster
         run: |

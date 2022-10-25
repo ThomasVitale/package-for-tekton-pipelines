@@ -25,7 +25,6 @@ jobs:
         uses: vmware-tanzu/carvel-setup-action@v1.1.1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          kctrl: v0.41.0
 
       - name: Log into container registry
         uses: redhat-actions/podman-login@v1.4
