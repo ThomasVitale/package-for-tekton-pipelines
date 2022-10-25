@@ -4,7 +4,7 @@ directories:
   - githubRelease:
       disableAutoChecksumValidation: true
       slug: tektoncd/pipeline
-      tag: v0.40.0
+      tag: v0.40.2
     includePaths:
     - release.yaml
     path: .

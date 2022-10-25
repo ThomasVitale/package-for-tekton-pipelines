@@ -6,7 +6,7 @@ env:
   COSIGN_EXPERIMENTAL: 1
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
-  VERSION: 0.40.0
+  VERSION: 0.40.2
 
 jobs:
   build:
@@ -19,12 +19,13 @@ jobs:
       image-release: ${{ steps.image-info.outputs.release }}
     steps:
       - name: Checkout source code
-        uses: actions/checkout@v3.0.2
+        uses: actions/checkout@v3.1.0
 
       - name: Set up Carvel
         uses: vmware-tanzu/carvel-setup-action@v1.1.1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+          kctrl: v0.41.0
 
       - name: Log into container registry
         uses: redhat-actions/podman-login@v1.4
@@ -58,7 +59,7 @@ jobs:
           package_file=$(find carvel-artifacts/packages -name 'package.yml')
           image_release=$(yq '.spec.template.spec.fetch[0].imgpkgBundle.image' ${package_file})
           echo "IMAGE_RELEASE=${image_release}" >> $GITHUB_ENV
-          echo "::set-output name=release::${image_release}"
+          echo "release=${image_release}" >> $GITHUB_OUTPUT
       
       - name: Add additional tags to OCI image
         run: |
@@ -79,14 +80,14 @@ jobs:
                 ./README.md
       
       - name: Upload package.yml artifact
-        uses: actions/upload-artifact@v3.1.0
+        uses: actions/upload-artifact@v3.1.1
         with:
           name: ${{ env.VERSION }}.yml
           path: ./repo/packages/tekton-pipelines.packages.kadras.io/${{ env.VERSION }}.yml
           retention-days: 1
       
       - name: Upload metadata.yml artifact
-        uses: actions/upload-artifact@v3.1.0
+        uses: actions/upload-artifact@v3.1.1
         with:
           name: metadata.yml
           path: ./repo/packages/tekton-pipelines.packages.kadras.io/metadata.yml
@@ -103,9 +104,9 @@ jobs:
       IMAGE_RELEASE: ${{ needs.build.outputs.image-release }}
     steps:
       - name: Install Cosign
-        uses: sigstore/cosign-installer@v2.7.0
+        uses: sigstore/cosign-installer@v2.8.1
         with:
-          cosign-release: 'v1.12.1'
+          cosign-release: 'v1.13.0'
 
       - name: Log into container registry
         uses: redhat-actions/podman-login@v1.4
@@ -130,9 +131,9 @@ jobs:
       PROVENANCE_FILE: provenance.att
     steps:
       - name: Install Cosign
-        uses: sigstore/cosign-installer@v2.7.0
+        uses: sigstore/cosign-installer@v2.8.1
         with:
-          cosign-release: 'v1.12.1'
+          cosign-release: 'v1.13.0'
       
       - name: Log into container registry
         uses: redhat-actions/podman-login@v1.4
@@ -160,7 +161,7 @@ jobs:
           jq '.predicate' "${PROVENANCE_FILE}" > provenance-predicate.att
           cosign attest --predicate provenance-predicate.att --type slsaprovenance "${IMAGE_RELEASE}"
 
-      - uses: actions/upload-artifact@v3.1.0
+      - uses: actions/upload-artifact@v3.1.1
         with:
           name: provenance.att
           path: ${{ env.PROVENANCE_FILE }}
@@ -175,19 +176,19 @@ jobs:
       PACKAGE_REPO: kadras-packages
     steps:
       - name: Download package.yml artifact
-        uses: actions/download-artifact@v3.0.0
+        uses: actions/download-artifact@v3.0.1
         with:
           name: ${{ env.VERSION }}.yml
           path: ./artifacts
       
       - name: Download metadata.yml artifact
-        uses: actions/download-artifact@v3.0.0
+        uses: actions/download-artifact@v3.0.1
         with:
           name: metadata.yml
           path: ./artifacts
 
       - name: Checkout package repository source code
-        uses: actions/checkout@v3.0.2
+        uses: actions/checkout@v3.1.0
         with:
           path: kadras-packages
           repository: ${{ github.repository_owner }}/${{ env.PACKAGE_REPO }}
