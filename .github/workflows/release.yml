@@ -17,6 +17,6 @@ jobs:
       registry-server: ghcr.io
       registry-username: ${{ github.actor }}
       image: ${{ github.repository }}
-      version: 0.40.2
+      version: 0.41.0
     secrets:
       pull-request-token: ${{ secrets.GH_ORG_PAT }}

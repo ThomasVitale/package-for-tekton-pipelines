@@ -40,7 +40,7 @@ Either way, you can then install the Tekton Pipelines package using [`kctrl`](ht
 ```shell
 kctrl package install -i tekton-pipelines \
     -p tekton-pipelines.packages.kadras.io \
-    -v 0.40.2 \
+    -v 0.41.0 \
     -n carvel-packages
 ```
 
@@ -110,7 +110,7 @@ Then, reference it from the `kctrl` command when installing or upgrading the pac
 ```shell
 kctrl package install -i tekton-pipelines \
     -p tekton-pipelines.packages.kadras.io \
-    -v 0.40.2 \
+    -v 0.41.0 \
     -n carvel-packages \
     --values-file values.yml
 ```
