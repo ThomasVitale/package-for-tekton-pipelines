@@ -8,7 +8,6 @@ This project provides a [Carvel package](https://carvel.dev/kapp-controller/docs
 
 ## Prerequisites
 
-* Kubernetes <= 1.24 (support for 1.25 is [in progress](https://github.com/tektoncd/pipeline/pull/5536)).
 * Install the [`kctrl`](https://carvel.dev/kapp-controller/docs/latest/install/#installing-kapp-controller-cli-kctrl) CLI to manage Carvel packages in a convenient way.
 * Ensure [kapp-controller](https://carvel.dev/kapp-controller) is deployed in your Kubernetes cluster. You can do that with Carvel
 [`kapp`](https://carvel.dev/kapp/docs/latest/install) (recommended choice) or `kubectl`.
