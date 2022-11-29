@@ -31,30 +31,37 @@ defaults:
 #@schema/desc "Feature flags configuration stored in the feature-flags ConfigMap."
 feature_flags:
 
+  #@schema/desc "Setting this flag to 'false' will stop Tekton from waiting for a TaskRun's sidecar containers to be running before starting the first step. This will allow Tasks to be run in environments that don't support the DownwardAPI volume type, but may lead to unintended behaviour if sidecars are used."
+  await_sidecar_readiness: "true"
+
   #@schema/desc "Setting this flag to 'true' will prevent Tekton to create an Affinity Assistant for every TaskRun sharing a PVC workspace."
   disable_affinity_assistant: "false"
 
   #@schema/desc "Setting this flag to 'true' will prevent Tekton scanning attached service accounts and injecting any credentials it finds into your Steps."
   disable_creds_init: "false"
 
-  #@schema/desc "Setting this flag to 'false' will stop Tekton from waiting for a TaskRun's sidecar containers to be running before starting the first step. This will allow Tasks to be run in environments that don't support the DownwardAPI volume type, but may lead to unintended behaviour if sidecars are used."
-  await_sidecar_readiness: "true"
-
-  #@schema/desc "This option should be set to 'false' when Pipelines is running in a cluster that does not use injected sidecars such as Istio. Setting it to false should decrease the time it takes for a TaskRun to start running. For clusters that use injected sidecars, setting this option to false can lead to unexpected behavior."
-  running_in_environment_with_injected_sidecars: "true"
-
-  #@schema/desc "Setting this flag to 'true' will require that any Git SSH Secret offered to Tekton must have known_hosts included."
-  require_git_ssh_secret_known_hosts: "false"
-
-  #@schema/desc "Setting this flag to 'true' enables the use of Tekton OCI bundle. This is an experimental feature and thus should still be considered an alpha feature."
-  enable_tekton_oci_bundles: "false"
+  #@schema/desc "Setting this flag will determine which gated features are enabled."
+  #@schema/validation one_of=["stable", "alpha"]
+  enable_api_fields: "stable"
 
   #@schema/desc "Setting this flag to 'true' enables the use of custom tasks from within pipelines. This is an experimental feature and thus should still be considered an alpha feature."
   enable_custom_tasks: "false"
 
-  #@schema/desc "Setting this flag will determine which gated features are enabled."
-  #@schema/validation one_of=["stable", "alpha"]
-  enable_api_fields: "stable"
+  #@schema/desc "Setting this flag to 'true' enables populating the 'provenance' field in TaskRun and PipelineRun status. This field contains metadata about resources used in the TaskRun/PipelineRun such as the source from where a remote Task/Pipeline definition was fetched."
+  enable_provenance_in_status: "false"
+
+  #@schema/desc "Setting this flag to 'true' enables the use of Tekton OCI bundle. This is an experimental feature and thus should still be considered an alpha feature."
+  enable_tekton_oci_bundles: "false"
+
+  #@schema/desc "Setting this flag to 'true' will require that any Git SSH Secret offered to Tekton must have known_hosts included."
+  require_git_ssh_secret_known_hosts: "false"
+  
+  #@schema/desc "Setting this flag to 'enforce' will enforce verification of tasks/pipeline. Failing to verify will fail the taskrun/pipelinerun. 'warn' will only log the err message and 'skip' will skip the whole verification."
+  #@schema/validation one_of=["enforce", "warn", "skip"]
+  resource_verification_mode: "skip"
+
+  #@schema/desc "This option should be set to 'false' when Pipelines is running in a cluster that does not use injected sidecars such as Istio. Setting it to false should decrease the time it takes for a TaskRun to start running. For clusters that use injected sidecars, setting this option to false can lead to unexpected behavior."
+  running_in_environment_with_injected_sidecars: "true"
 
   #@schema/desc "Setting this flag to 'true' enables CloudEvents for Runs, as long as a CloudEvents sink is configured in the config-defaults config map."
   send_cloudevents_for_runs: "false"

@@ -6,6 +6,10 @@
 ---
 data:
 
+  #@ if/end data.values.feature_flags.await_sidecar_readiness:
+  #@overlay/replace
+  await-sidecar-readiness: #@ data.values.feature_flags.await_sidecar_readiness
+
   #@ if/end data.values.feature_flags.disable_affinity_assistant:
   #@overlay/replace
   disable-affinity-assistant: #@ data.values.feature_flags.disable_affinity_assistant
@@ -14,30 +18,34 @@ data:
   #@overlay/replace
   disable-creds-init: #@ data.values.feature_flags.disable_creds_init
 
-  #@ if/end data.values.feature_flags.await_sidecar_readiness:
+  #@ if/end data.values.feature_flags.enable_api_fields:
   #@overlay/replace
-  await-sidecar-readiness: #@ data.values.feature_flags.await_sidecar_readiness
+  enable-api-fields: #@ data.values.feature_flags.enable_api_fields
+
+  #@ if/end data.values.feature_flags.enable_custom_tasks:
+  #@overlay/replace
+  enable-custom-tasks: #@ data.values.feature_flags.enable_custom_tasks
+
+  #@ if/end data.values.feature_flags.enable_provenance_in_status:
+  #@overlay/replace
+  enable-provenance-in-status: #@ data.values.feature_flags.enable_provenance_in_status
+
+  #@ if/end data.values.feature_flags.enable_tekton_oci_bundles:
+  #@overlay/replace
+  enable-tekton-oci-bundles: #@ data.values.feature_flags.enable_tekton_oci_bundles
+
+  #@ if/end data.values.feature_flags.require_git_ssh_secret_known_hosts:
+  #@overlay/replace
+  require-git-ssh-secret-known-hosts: #@ data.values.feature_flags.require_git_ssh_secret_known_hosts
+
+  #@ if/end data.values.feature_flags.resource_verification_mode:
+  #@overlay/replace
+  resource-verification-mode: #@ data.values.feature_flags.resource_verification_mode
 
   #@ if/end data.values.feature_flags.running_in_environment_with_injected_sidecars:
   #@overlay/replace
   running-in-environment-with-injected-sidecars: #@ data.values.feature_flags.running_in_environment_with_injected_sidecars
-  
-  #@ if/end data.values.feature_flags.require_git_ssh_secret_known_hosts:
-  #@overlay/replace
-  require-git-ssh-secret-known-hosts: #@ data.values.feature_flags.require_git_ssh_secret_known_hosts
-  
-  #@ if/end data.values.feature_flags.enable_tekton_oci_bundles:
-  #@overlay/replace
-  enable-tekton-oci-bundles: #@ data.values.feature_flags.enable_tekton_oci_bundles
-  
-  #@ if/end data.values.feature_flags.enable_custom_tasks:
-  #@overlay/replace
-  enable-custom-tasks: #@ data.values.feature_flags.enable_custom_tasks
-  
-  #@ if/end data.values.feature_flags.enable_api_fields:
-  #@overlay/replace
-  enable-api-fields: #@ data.values.feature_flags.enable_api_fields
-  
+
   #@ if/end data.values.feature_flags.send_cloudevents_for_runs:
   #@overlay/replace
   send-cloudevents-for-runs: #@ data.values.feature_flags.send_cloudevents_for_runs
