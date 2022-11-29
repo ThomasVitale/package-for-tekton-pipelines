@@ -6,9 +6,6 @@
 ---
 data:
 
-  #@overlay/remove
-  _example:
-
   #@ if/end data.values.defaults.timeout_minutes:
   default-timeout-minutes: #@ data.values.defaults.timeout_minutes
 
