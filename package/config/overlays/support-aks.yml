@@ -1,7 +1,7 @@
 #@ load("@ytt:data", "data")
 #@ load("@ytt:overlay", "overlay")
 
-#! On AKS, we disable the Admissions Enforcer so that it doesn't interfer with the Tekton Pipelines webhooks.
+#! On AKS, we disable the Admissions Enforcer so that it doesn't interfere with the Tekton Pipelines webhooks.
 #! See: https://learn.microsoft.com/en-us/azure/aks/faq#can-admission-controller-webhooks-impact-kube-system-and-internal-aks-namespaces
 
 #@ mutating_webhook = overlay.subset({"apiVersion": "admissionregistration.k8s.io/v1", "kind": "MutatingWebhookConfiguration"})

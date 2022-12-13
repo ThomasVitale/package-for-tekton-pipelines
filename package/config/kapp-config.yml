@@ -8,8 +8,8 @@ minimumRequiredVersion: 0.50.0
 #! See more about the resource merge method: https://carvel.dev/kapp/docs/latest/merge-method.
 rebaseRules:
 
-#! If enabled, the HorizontalPodAutoscaler updates the replicas on Deployments
-#! and we want to keep them between upgrades.
+#! The HorizontalPodAutoscaler updates the replicas on Deployments.
+#! We want to keep that configuration between upgrades.
 - path: [spec, replicas]
   type: copy
   sources: [existing, new]
