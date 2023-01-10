@@ -31,7 +31,7 @@ Then, install the Tekton Pipelines package.
   ```shell
   kctrl package install -i tekton-pipelines \
     -p tekton-pipelines.packages.kadras.io \
-    -v 0.42.0+kadras.1 \
+    -v 0.43.1 \
     -n kadras-packages
   ```
 
@@ -110,7 +110,7 @@ Then, reference it from the `kctrl` command when installing or upgrading the pac
   ```shell
   kctrl package install -i tekton-pipelines \
     -p tekton-pipelines.packages.kadras.io \
-    -v 0.42.0+kadras.1 \
+    -v 0.43.1 \
     -n kadras-packages \
     --values-file values.yml
   ```
