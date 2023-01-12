@@ -11,13 +11,13 @@ jobs:
       contents: write
       id-token: write
       packages: write
-    uses: arktonix/cloud-native-utils/.github/workflows/package-release.yml@main
+    uses: kadras-io/github-reusable-workflows/.github/workflows/package-release.yml@main
     with:
       package-name-slug: tekton-pipelines
       package-name-display: Tekton Pipelines
       registry-server: ghcr.io
       registry-username: ${{ github.actor }}
       image: ${{ github.repository }}
-      version: 0.43.1
+      version: 0.43.2
     secrets:
       pull-request-token: ${{ secrets.GH_ORG_PAT }}
