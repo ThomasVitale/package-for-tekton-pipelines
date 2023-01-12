@@ -19,7 +19,7 @@ spec:
           - kbld: {}
       export:
       - imgpkgBundle:
-          image: ghcr.io/arktonix/package-for-tekton-pipelines
+          image: ghcr.io/kadras-io/package-for-tekton-pipelines
           useKbldImagesLock: true
         includePaths:
         - config
