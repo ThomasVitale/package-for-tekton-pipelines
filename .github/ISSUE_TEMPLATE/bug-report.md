@@ -24,5 +24,6 @@ Add any other context about the problem here.
 
 **Environment:**
 
-- Kubernetes version (execute `kubectl version`): 
-- kapp-controller version (execute `kubectl get deployment -n kapp-controller kapp-controller -o yaml` and the annotation is `kbld.k14s.io/images`): 
+* Kubernetes version (execute `kubectl version`):
+* kctrl version (execute `kctrl version`):
+* kapp-controller version (execute `kubectl get deployment -n kapp-controller kapp-controller -o yaml` and the annotation is `kbld.k14s.io/images`):

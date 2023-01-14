@@ -17,6 +17,7 @@ rebaseRules:
   - apiVersionKindMatcher: {apiVersion: apps/v1, kind: Deployment}
 
 #! This Secret is created empty and populated by Tekton Pipelines.
+#! We want to keep that configuration between upgrades.
 - paths:
   - [data, ca-cert.pem]
   - [data, server-cert.pem]
@@ -24,10 +25,7 @@ rebaseRules:
   type: copy
   sources: [new, existing]
   resourceMatchers:
-  - kindNamespaceNameMatcher:
-      kind: Secret
-      namespace: tekton-pipelines
-      name: webhook-certs
+  - apiVersionKindMatcher: {apiVersion: v1, kind: Secret, name: webhook-certs}
 
 #! By default, the changes applied by users to the ConfigMaps used by Tekton Pipelines
 #! are persisted between upgrades.
@@ -41,26 +39,23 @@ rebaseRules:
       - hasNamespaceMatcher:
           names:
           - tekton-pipelines
+          - tekton-pipelines-resolvers
 
-#! Changes applied to the config-defaults ConfigMap directly to the cluster
+#! Changes applied by users to the ConfigMaps for which this package provides overlays
 #! are not persisted between upgrades.
 - path: [data]
   type: copy
   sources: [new]
   resourceMatchers:
   - kindNamespaceNameMatcher: {kind: ConfigMap, namespace: tekton-pipelines, name: config-defaults}
-
-#! When upgrading, we persist the changes applied to the ConfigMaps used by Tekton Pipelines,
-#! but we want to get the new examples applied from the new version.
-- path: [data, _example]
-  type: remove
-  resourceMatchers:
-  - apiVersionKindMatcher: {apiVersion: v1, kind: ConfigMap}
-- path: [data, _example]
-  type: copy
-  sources: [new]
-  resourceMatchers:
-  - apiVersionKindMatcher: {apiVersion: v1, kind: ConfigMap}
+  - kindNamespaceNameMatcher: {kind: ConfigMap, namespace: tekton-pipelines, name: config-leader-election}
+  - kindNamespaceNameMatcher: {kind: ConfigMap, namespace: tekton-pipelines, name: config-logging}
+  - kindNamespaceNameMatcher: {kind: ConfigMap, namespace: tekton-pipelines, name: config-observability}
+  - kindNamespaceNameMatcher: {kind: ConfigMap, namespace: tekton-pipelines, name: config-registry-cert}
+  - kindNamespaceNameMatcher: {kind: ConfigMap, namespace: tekton-pipelines, name: feature-flags}
+  - kindNamespaceNameMatcher: {kind: ConfigMap, namespace: tekton-pipelines-resolvers, name: config-leader-election}
+  - kindNamespaceNameMatcher: {kind: ConfigMap, namespace: tekton-pipelines-resolvers, name: config-logging}
+  - kindNamespaceNameMatcher: {kind: ConfigMap, namespace: tekton-pipelines-resolvers, name: config-observability}
 
 #! This webhook configuration is populated by Tekton Pipelines.
 #! We want to persist those changes between upgrades.
@@ -75,7 +70,7 @@ rebaseRules:
   - apiVersionKindMatcher: {apiVersion: apiextensions.k8s.io/v1, kind: CustomResourceDefinition}
 
 #! These webhook configurations are populated by Tekton Pipelines.
-#! By default, we want to persist those changes between upgrades.
+#! We want to persist those changes between upgrades.
 - paths:
   - [webhooks, {allIndexes: true}, clientConfig, service, path]
   - [webhooks, {allIndexes: true}, clientConfig, service, port]
