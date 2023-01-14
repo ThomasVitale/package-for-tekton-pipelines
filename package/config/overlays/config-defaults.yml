@@ -1,10 +1,13 @@
 #@ load("@ytt:data", "data")
 #@ load("@ytt:overlay", "overlay")
 
-#@overlay/match by=overlay.subset({"kind": "ConfigMap", "metadata":{"name":"config-defaults"}}),expects=1
+#@overlay/match by=overlay.subset({"kind":"ConfigMap", "metadata":{"namespace":"tekton-pipelines", "name":"config-defaults"}}),expects=1
 #@overlay/match-child-defaults missing_ok=True
 ---
 data:
+
+  #@overlay/remove
+  _example:
 
   #@ if/end data.values.defaults.timeout_minutes:
   default-timeout-minutes: #@ data.values.defaults.timeout_minutes
@@ -29,3 +32,6 @@ data:
 
   #@ if/end data.values.defaults.max_matrix_combinations_count:
   default-max-matrix-combinations-count: #@ data.values.defaults.max_matrix_combinations_count
+
+  #@ if/end data.values.defaults.forbidden_env:
+  default-forbidden-env: #@ data.values.defaults.forbidden_env

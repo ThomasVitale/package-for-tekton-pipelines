@@ -11,7 +11,9 @@ spec:
       app:
         spec:
           deploy:
-          - kapp: {}
+          - kapp:
+              rawOptions:
+              - --wait-timeout=5m
           template:
           - ytt:
               paths:

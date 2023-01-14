@@ -1,0 +1,10 @@
+#@ load("@ytt:data", "data")
+#@ load("@ytt:overlay", "overlay")
+
+#@overlay/match by=overlay.subset({"kind": "ConfigMap", "metadata":{"namespace":"tekton-pipelines", "name":"config-registry-cert"}}),expects=1
+#@overlay/match-child-defaults missing_ok=True
+---
+data:
+
+  #@ if/end data.values.ca_cert_data:
+  cert: #@ data.values.ca_cert_data

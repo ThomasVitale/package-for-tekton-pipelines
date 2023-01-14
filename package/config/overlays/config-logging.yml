@@ -1,0 +1,19 @@
+#@ load("@ytt:data", "data")
+#@ load("@ytt:overlay", "overlay")
+
+#@overlay/match by=overlay.subset({"kind":"ConfigMap", "metadata":{"name":"config-logging"}}),expects=2
+#@overlay/match-child-defaults missing_ok=True
+---
+data:
+
+  #@ if/end data.values.logging.zap_logger_config:
+  #@overlay/replace
+  zap-logger-config: #@ data.values.logging.zap_logger_config
+
+  #@ if/end data.values.logging.loglevel.controller:
+  #@overlay/replace
+  loglevel.controller: #@ data.values.logging.loglevel.controller
+
+  #@ if/end data.values.logging.loglevel.webhook:
+  #@overlay/replace
+  loglevel.webhook: #@ data.values.logging.loglevel.webhook
