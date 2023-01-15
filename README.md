@@ -31,6 +31,19 @@ First, add the [Kadras package repository](https://github.com/kadras-io/kadras-p
     -n kadras-packages
   ```
 
+<details><summary>Installation without package repository</summary>
+<p>
+The recommended way of installing the Tekton Pipelines package is via the <a href="https://github.com/kadras-io/kadras-packages">Kadras package repository</a>. If you prefer not using the repository, you can add the package metadata directly by creating the necessary resources using <a href="https://carvel.dev/kapp/docs/latest/install"><code>kapp</code></a> or <code>kubectl</code>.
+
+  ```shell
+  kubectl create namespace kadras-packages
+  kapp deploy -a tekton-pipelines-package -n kadras-packages -y \
+    -f https://github.com/kadras-io/package-for-tekton-pipelines/releases/latest/download/metadata.yml \
+    -f https://github.com/kadras-io/package-for-tekton-pipelines/releases/latest/download/package.yml
+  ```
+</p>
+</details>
+
 Then, install the Tekton Pipelines package.
 
   ```shell
@@ -45,19 +58,6 @@ You can find the `${VERSION}` value by retrieving the list of package versions a
   ```shell
   kctrl package available list -p tekton-pipelines.packages.kadras.io -n kadras-packages
   ```
-
-<details><summary>Installation without package repository</summary>
-<p>
-The recommended way of installing the Tekton Pipelines package is via the <a href="https://github.com/kadras-io/kadras-packages">Kadras package repository</a>. If you prefer not using the repository, you can install the package by creating the necessary Carvel <code>PackageMetadata</code> and <code>Package</code> resources directly using <a href="https://carvel.dev/kapp/docs/latest/install"><code>kapp</code></a> or <code>kubectl</code>.
-
-  ```shell
-  kubectl create namespace kadras-packages
-  kapp deploy -a tekton-pipelines-package -n kadras-packages -y \
-    -f https://github.com/kadras-io/package-for-tekton-pipelines/releases/latest/download/metadata.yml \
-    -f https://github.com/kadras-io/package-for-tekton-pipelines/releases/latest/download/package.yml
-  ```
-</p>
-</details>
 
 ### Verification
 
