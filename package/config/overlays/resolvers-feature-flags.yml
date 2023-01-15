@@ -1,0 +1,23 @@
+#@ load("@ytt:data", "data")
+#@ load("@ytt:overlay", "overlay")
+
+#@overlay/match by=overlay.subset({"kind":"ConfigMap", "metadata":{"name":"resolvers-feature-flags", "namespace": "tekton-pipelines-resolvers"}}),expects=1
+#@overlay/match-child-defaults missing_ok=True
+---
+data:
+
+  #@ if/end data.values.resolvers.feature_flags.enable_bundles_resolver:
+  #@overlay/replace
+  enable-bundles-resolver: #@ data.values.resolvers.feature_flags.enable_bundles_resolver
+
+  #@ if/end data.values.resolvers.feature_flags.enable_hub_resolver:
+  #@overlay/replace
+  enable-hub-resolver: #@ data.values.resolvers.feature_flags.enable_hub_resolver
+
+  #@ if/end data.values.resolvers.feature_flags.enable_git_resolver:
+  #@overlay/replace
+  enable-git-resolver: #@ data.values.resolvers.feature_flags.enable_git_resolver
+
+  #@ if/end data.values.resolvers.feature_flags.enable_cluster_resolver:
+  #@overlay/replace
+  enable-cluster-resolver: #@ data.values.resolvers.feature_flags.enable_cluster_resolver

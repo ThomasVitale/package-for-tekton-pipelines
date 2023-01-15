@@ -1,0 +1,27 @@
+#@ load("@ytt:data", "data")
+#@ load("@ytt:overlay", "overlay")
+
+#@overlay/match by=overlay.subset({"kind":"ConfigMap", "metadata":{"name":"hubresolver-config", "namespace":"tekton-pipelines-resolvers"}}),expects=1
+#@overlay/match-child-defaults missing_ok=True
+---
+data:
+
+  #@ if/end data.values.resolvers.hub.default_tekton_hub_catalog:
+  #@overlay/replace
+  default-tekton-hub-catalog: #@ data.values.resolvers.hub.default_tekton_hub_catalog
+
+  #@ if/end data.values.resolvers.hub.default_artifact_hub_task_catalog:
+  #@overlay/replace
+  default-artifact-hub-task-catalog: #@ data.values.resolvers.hub.default_artifact_hub_task_catalog
+
+  #@ if/end data.values.resolvers.hub.default_artifact_hub_pipeline_catalog:
+  #@overlay/replace
+  default-artifact-hub-pipeline-catalog: #@ data.values.resolvers.hub.default_artifact_hub_pipeline_catalog
+
+  #@ if/end data.values.resolvers.hub.default_kind:
+  #@overlay/replace
+  default-kind: #@ data.values.resolvers.hub.default_kind
+
+  #@ if/end data.values.resolvers.hub.default_type:
+  #@overlay/replace
+  default-type: #@ data.values.resolvers.hub.default_type

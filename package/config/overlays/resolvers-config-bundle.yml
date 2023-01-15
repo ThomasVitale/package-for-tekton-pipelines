@@ -1,0 +1,15 @@
+#@ load("@ytt:data", "data")
+#@ load("@ytt:overlay", "overlay")
+
+#@overlay/match by=overlay.subset({"kind":"ConfigMap", "metadata":{"name":"bundleresolver-config", "namespace":"tekton-pipelines-resolvers"}}),expects=1
+#@overlay/match-child-defaults missing_ok=True
+---
+data:
+
+  #@ if/end data.values.resolvers.bundle.default_service_account:
+  #@overlay/replace
+  default-service-account: #@ data.values.resolvers.bundle.default_service_account
+
+  #@ if/end data.values.resolvers.bundle.default_kind:
+  #@overlay/replace
+  default-kind: #@ data.values.resolvers.bundle.default_kind
