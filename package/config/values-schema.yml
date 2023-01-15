@@ -4,7 +4,30 @@
 #@schema/desc "Self-signed certificate for the private container registry storing the images used in Tekton Tasks (PEM-encoded format)."
 ca_cert_data: ""
 
-#@schema/desc "Default configuration stored in the config-defaults ConfigMap."
+#@schema/desc "Settings for the `tekton-pipelines-controller` Deployment."
+controller:
+
+  #@schema/desc "The number of replicas for the `tekton-pipelines-controller` Deployment. In order to enable high availability, it should be greater than 1."
+  #@schema/validation min=1
+  replicas: 1
+
+#@schema/desc "Settings for the `tekton-pipelines-remote-resolvers` Deployment."
+resolver:
+
+  #@schema/desc "The number of replicas. In order to enable high availability, it should be greater than 1."
+  #@schema/validation min=1
+  replicas: 1
+
+#@schema/desc "Settings for the `tekton-pipelines-webhook` Deployment."
+webhook:
+
+  #@schema/desc "PodDisruptionBudget configuration for the `tekton-pipelines-webhook` Deployment."
+  pdb:
+
+    #@schema/desc "Setting this flag to `true` enables a PodDisruptionBudget for the `tekton-pipelines-webhook` Deployment and ensures high availability."
+    enable: false
+
+#@schema/desc "Default configuration stored in the `config-defaults` ConfigMap."
 defaults:
 
   #@schema/desc "Number of minutes to use for TaskRun and PipelineRun, if none is specified."
@@ -13,21 +36,21 @@ defaults:
   #@schema/desc "Service account name to use for TaskRun and PipelineRun, if none is specified."
   service_account: "default"
   
-  #@schema/desc "Value given to the 'app.kubernetes.io/managed-by' label applied to all Pods created for TaskRuns."
+  #@schema/desc "Value given to the `app.kubernetes.io/managed-by` label applied to all Pods created for TaskRuns."
   managed_by_label_value: "tekton-pipelines"
 
   #@schema/desc "Pod template to use for TaskRun and PipelineRun."
   pod_template: ""
   
-  #@schema/desc "Pod template to use for affinity assistant pods."
+  #@schema/desc "Pod template to use for affinity assistant Pods."
   affinity_assistant_pod_template: ""
 
-  #@schema/desc "CloudEvents sink to be used for TaskRun and PipelineRun. If no sink is specified, no CloudEvent is generated."
+  #@schema/desc "CloudEvents sink to be used for TaskRun, PipelineRun, CustomRun, and Run lifeycle events. If no sink is specified, no CloudEvent is generated."
   cloud_events_sink: ""
   
   #@schema/desc "Workspace configuration provided for any Workspaces that a Task declares but that a TaskRun does not explicitly provide."
-  #@schema/examples ("Use emptyDir volume for workspace", "emptyDir: {}")
-  task_run_workspace_binding: ""
+  task_run_workspace_binding: |
+    emptyDir: {}
   
   #@schema/desc "Maximum number of combinations from a Matrix, if none is specified."
   max_matrix_combinations_count: "256"
@@ -35,26 +58,22 @@ defaults:
   #@schema/desc "Comma seperated environment variables that cannot be overridden by PodTemplate."
   forbidden_env: ""
 
-#@schema/desc "Leader election configuration stored in the config-leader-election ConfigMaps and used in both Tekton Pipelines and Tekton Pipelines Resolvers."
+#@schema/desc "Leader election configuration stored in the `config-leader-election` ConfigMaps and used in both Tekton Pipelines and Tekton Pipelines Resolvers."
 leader_election:
 
   #@schema/desc "How long non-leaders will wait to try to acquire the lock; 15 seconds is the value used by core Kubernetes controllers."
-  #@schema/examples ("60 seconds", "60s")
-  lease_duration: ""
+  lease_duration: "60s"
 
   #@schema/desc "How long a leader will try to renew the lease before giving up; 10 seconds is the value used by core Kubernetes controllers."
-  #@schema/examples ("40 seconds", "40s")
-  renew_deadline: ""
+  renew_deadline: "40s"
 
   #@schema/desc "How long the leader election client waits between tries of actions; 2 seconds is the value used by core Kubernetes controllers."
-  #@schema/examples ("10 seconds", "10s")
-  retry_period: ""
+  retry_period: "10s"
 
-  #@schema/desc "Yhe number of buckets used to partition key space of each Reconciler. If this number is M and the replica number of the controller is N, the N replicas will compete for the M buckets. The owner of a bucket will take care of the reconciling for the keys partitioned into that bucket."
-  #@schema/examples ("1 bucket", "1")
-  buckets: ""
+  #@schema/desc "The number of buckets used to partition key space of each Reconciler. If this number is M and the replica number of the controller is N, the N replicas will compete for the M buckets. The owner of a bucket will take care of the reconciling for the keys partitioned into that bucket. The maximum value of at this time is 10."
+  buckets: "1"
 
-#@schema/desc "Logging configuration stored in the config-logging ConfigMaps and used in both Tekton Pipelines and Tekton Pipelines Resolvers."
+#@schema/desc "Logging configuration stored in the `config-logging` ConfigMaps and used in both Tekton Pipelines and Tekton Pipelines Resolvers."
 logging:
 
   #@schema/desc "Configuration for the zap logger used by all Tekton containers."
@@ -62,12 +81,12 @@ logging:
 
   #@schema/desc "Configuration of the log level for each Deployment."
   loglevel:
-    #@schema/desc "Log level for the tekton-pipelines-controller and tekton-pipelines-resolvers Deployments."
+    #@schema/desc "Log level for the `tekton-pipelines-controller` and `tekton-pipelines-resolvers` Deployments."
     controller: "info"
-    #@schema/desc "Log level for the tekton-pipelines-webhook Deployment."
+    #@schema/desc "Log level for the `tekton-pipelines-webhook` Deployment."
     webhook: "info"
 
-#@schema/desc "Observability configuration stored in the config-observability ConfigMaps and used in both Tekton Pipelines and Tekton Pipelines Resolvers."
+#@schema/desc "Observability configuration stored in the `config-observability` ConfigMaps and used in both Tekton Pipelines and Tekton Pipelines Resolvers."
 observability:
 
   #@schema/desc "Configuration for the metrics produced by the Tekton components."
@@ -80,7 +99,7 @@ observability:
     #@schema/desc "The Stackdriver project ID. When running on GCE, application default credentials will be used and metrics will be sent to the cluster's project if this field is not provided."
     stackdriver_project_id: ""
 
-    #@schema/desc "Whether it is allowed to send metrics to Stackdriver using 'global' resource type and custom metric type. Ignore if backend_destination is not 'stackdriver'."
+    #@schema/desc "Whether it is allowed to send metrics to Stackdriver using 'global' resource type and custom metric type. Ignore if `backend_destination` is not `stackdriver`."
     #@schema/validation one_of=["true", "false"]
     allow_stackdriver_custom_metrics: "false"
 
@@ -91,7 +110,7 @@ observability:
       #@schema/validation one_of=["taskrun", "task", "namespace"]
       level: "task"
 
-      #@schema/desc "Duration type for the TaskRun metrics. Histogram value isn’t available when the 'taskrun' level is selected."
+      #@schema/desc "Duration type for the TaskRun metrics. Histogram value isn’t available when the `taskrun` level is selected."
       #@schema/validation one_of=["histogram", "lastvalue"]
       duration_type: "histogram"
 
@@ -102,61 +121,156 @@ observability:
       #@schema/validation one_of=["pipelinerun", "pipeline", "namespace"]
       level: "pipeline"
 
-      #@schema/desc "Duration type for the PipelineRun metrics. Histogram value isn’t available when the 'pipelinerun' level is selected."
+      #@schema/desc "Duration type for the PipelineRun metrics. Histogram value isn’t available when the `pipelinerun` level is selected."
       #@schema/validation one_of=["histogram", "lastvalue"]
       duration_type: "histogram"
 
-#@schema/desc "Feature flags configuration stored in the feature-flags ConfigMap."
+#@schema/desc "Feature flags configuration stored in the `feature-flags` ConfigMap."
 feature_flags:
 
-  #@schema/desc "Setting this flag to 'true' will prevent Tekton to create an Affinity Assistant for every TaskRun sharing a PVC workspace."
+  #@schema/desc "Setting this flag to `true` will prevent Tekton to create an Affinity Assistant for every TaskRun sharing a PVC workspace."
   #@schema/validation one_of=["true", "false"]
   disable_affinity_assistant: "false"
 
-  #@schema/desc "Setting this flag to 'true' will prevent Tekton scanning attached service accounts and injecting any credentials it finds into your Steps."
+  #@schema/desc "Setting this flag to `true` will prevent Tekton scanning attached service accounts and injecting any credentials it finds into your Steps."
   #@schema/validation one_of=["true", "false"]
   disable_creds_init: "false"
 
-  #@schema/desc "Setting this flag to 'false' will stop Tekton from waiting for a TaskRun's sidecar containers to be running before starting the first step. This will allow Tasks to be run in environments that don't support the DownwardAPI volume type, but may lead to unintended behaviour if sidecars are used."
+  #@schema/desc "Setting this flag to `false` will stop Tekton from waiting for a TaskRun's sidecar containers to be running before starting the first step. This will allow Tasks to be run in environments that don't support the DownwardAPI volume type, but may lead to unintended behaviour if sidecars are used."
   #@schema/validation one_of=["true", "false"]
   await_sidecar_readiness: "true"
 
-  #@schema/desc "This option should be set to 'false' when Pipelines is running in a cluster that does not use injected sidecars such as Istio. Setting it to false should decrease the time it takes for a TaskRun to start running. For clusters that use injected sidecars, setting this option to false can lead to unexpected behavior."
+  #@schema/desc "This option should be set to `false` when Pipelines is running in a cluster that does not use injected sidecars such as Istio. Setting it to false should decrease the time it takes for a TaskRun to start running. For clusters that use injected sidecars, setting this option to false can lead to unexpected behavior."
   #@schema/validation one_of=["true", "false"]
   running_in_environment_with_injected_sidecars: "true"
 
-  #@schema/desc "Setting this flag to 'true' will require that any Git SSH Secret offered to Tekton must have known_hosts included."
+  #@schema/desc "Setting this flag to `true` will require that any Git SSH Secret offered to Tekton must have `known_hosts` included."
   #@schema/validation one_of=["true", "false"]
   require_git_ssh_secret_known_hosts: "false"
 
-  #@schema/desc "Setting this flag to 'true' enables the use of Tekton OCI bundle. This is an experimental feature and thus should still be considered an alpha feature."
+  #@schema/desc "Setting this flag to `true` enables the use of Tekton OCI bundle. This is an experimental feature and thus should still be considered an alpha feature."
   #@schema/validation one_of=["true", "false"]
   enable_tekton_oci_bundles: "false"
 
-  #@schema/desc "Setting this flag to 'true' enables the use of custom tasks from within pipelines. This is an experimental feature and thus should still be considered an alpha feature."
+  #@schema/desc "Setting this flag to `true` enables the use of custom tasks from within pipelines."
   #@schema/validation one_of=["true", "false"]
-  enable_custom_tasks: "false"
+  enable_custom_tasks: "true"
 
   #@schema/desc "Setting this flag will determine which gated features are enabled."
-  #@schema/validation one_of=["stable", "alpha"]
+  #@schema/validation one_of=["stable", "beta", "alpha"]
   enable_api_fields: "stable"
 
-  #@schema/desc "Setting this flag to 'true' enables CloudEvents for Runs, as long as a CloudEvents sink is configured in the config-defaults config map."
+  #@schema/desc "Setting this flag to `true` enables CloudEvents for CustomRuns and Runs, as long as a CloudEvents sink is configured in the `config-defaults` ConfigMap."
   #@schema/validation one_of=["true", "false"]
   send_cloudevents_for_runs: "false"
 
-  #@schema/desc "Setting this flag to 'enforce' will enforce verification of tasks/pipeline. Failing to verify will fail the taskrun/pipelinerun. 'warn' will only log the err message and 'skip' will skip the whole verification."
+  #@schema/desc "Setting this flag to `enforce` will enforce verification of tasks/pipelines. Failing to verify will fail the TaskRun/PipelineRun. `warn` will only log the err message and `skip` will skip the whole verification."
   #@schema/validation one_of=["enforce", "warn", "skip"]
   resource_verification_mode: "skip"
 
-  #@schema/desc "Setting this flag to 'true' enables populating the 'provenance' field in TaskRun and PipelineRun status. This field contains metadata about resources used in the TaskRun/PipelineRun such as the source from where a remote Task/Pipeline definition was fetched."
+  #@schema/desc "Setting this flag to `true` enables populating the `provenance` field in TaskRun and PipelineRun status. This field contains metadata about resources used in the TaskRun/PipelineRun such as the source from where a remote Task/Pipeline definition was fetched."
   #@schema/validation one_of=["true", "false"]
   enable_provenance_in_status: "false"
 
-  #@schema/desc "Setting this flag to 'full' to enable full embedding of `TaskRun` and `Run` statuses in the `PipelineRun` status. Set it to 'minimal' to populate the `ChildReferences` field in the `PipelineRun` status with name, kind, and API version information for each `TaskRun` and `Run` in the `PipelineRun` instead. Set it to 'both' to do both."
+  #@schema/desc "Setting this flag to `full` to enable full embedding of `TaskRun` and `Run` statuses in the `PipelineRun` status. Set it to `minimal` to populate the `ChildReferences` field in the `PipelineRun` status with name, kind, and API version information for each `TaskRun` and `Run` in the `PipelineRun` instead. Set it to `both` to do both."
   #@schema/validation one_of=["full", "minimal", "both"]
   embedded_status: "full"
 
   #@schema/desc "Setting this flag will determine the version for custom tasks created by PipelineRuns."
   #@schema/validation one_of=["v1alpha1", "v1beta1"]
   custom_task_version: "v1alpha1"
+
+#@schema/desc "Configuration for the Tekton Resolvers, responsible for resolving requests for Tasks and Pipelines from remote locations."
+resolvers:
+
+  #@schema/desc "Configuration for the bundle resolver stored in the `bundleresolver-config` ConfigMap."
+  bundle:
+
+    #@schema/desc "The default name of the service account to use when constructing registry credentials."
+    default_service_account: "default"
+
+    #@schema/desc "The default resource kind to pull out of the bundle."
+    #@schema/validation one_of=["pipeline", "task"]
+    default_kind: "task"
+
+  #@schema/desc "Configuration for the cluster resolver stored in the `cluster-resolver-config` ConfigMap."
+  cluster:
+
+    #@schema/desc "The default resource kind to fetch."
+    #@schema/validation one_of=["pipeline", "task"]
+    default_kind: "task"
+
+    #@schema/desc "The default namespace to fetch resources from."
+    default_namespace: ""
+
+    #@schema/desc "A comma-separated list of namespaces which the resolver is allowed to access. Defaults to empty, meaning all namespaces are allowed."
+    allowed_namespaces: ""
+
+    #@schema/desc "A comma-separated list of namespaces which the resolver is blocked from accessing. Defaults to empty, meaning all namespaces are allowed."
+    blocked_namespaces: ""
+
+  #@schema/desc "Configuration for the git resolver stored in the `git-resolver-config` ConfigMap."
+  git:
+
+    #@schema/desc "The maximum amount of time a single anonymous cloning resolution may take."
+    fetch_timeout: "1m"
+
+    #@schema/desc "The git url to fetch the remote resource from when using anonymous cloning."
+    default_url: "https://github.com/tektoncd/catalog.git"
+
+    #@schema/desc "The git revision to fetch the remote resource from with either anonymous cloning or the authenticated API."
+    default_revision: "main"
+
+    #@schema/desc "The SCM type to use with the authenticated API."
+    #@schema/validation one_of=["github", "gitlab", "gitea", "bitbucketserver", "bitbucketcloud"]
+    scm_type: "github"
+
+    #@schema/desc "The SCM server URL to use with the authenticated API. Not needed when using github.com, gitlab.com, or BitBucket Cloud."
+    server_url: ""
+
+    #@schema/desc "The Kubernetes secret containing the API token for the SCM provider. Required when using the authenticated API."
+    api_token_secret_name: ""
+
+    #@schema/desc "The key in the API token secret containing the actual token. Required when using the authenticated API."
+    api_token_secret_key: ""
+
+    #@schema/desc "The namespace containing the API token secret."
+    api_token_secret_namespace: "default"
+
+    #@schema/desc "The default organization to look for repositories under when using the authenticated API."
+    default_org: ""
+
+  #@schema/desc "Configuration for the hub resolver stored in the `hubresolver-config` ConfigMap."
+  hub:
+
+    #@schema/desc "The default Tekton Hub catalog from where to pull the resource."
+    default_tekton_hub_catalog: "Tekton"
+
+    #@schema/desc "The default Artifact Hub Task catalog from where to pull the resource."
+    default_artifact_hub_task_catalog: "tekton-catalog-tasks"
+    
+    #@schema/desc "The default Artifact Hub Pipeline catalog from where to pull the resource."
+    default_artifact_hub_pipeline_catalog: "tekton-catalog-pipelines"
+    
+    #@schema/desc "The default resource kind to fetch."
+    #@schema/validation one_of=["pipeline", "task"]
+    default_kind: "task"
+    
+    #@schema/desc "The default hub from where to pull the resource."
+    #@schema/validation one_of=["artifact", "tekton"]
+    default_type: "artifact"
+
+  #@schema/desc "Feature flags configuration stored in the `resolvers-feature-flags` ConfigMap."
+  feature_flags:
+
+    #@schema/desc "Setting this flag to `true` enables remote resolution of Tekton OCI bundles."
+    enable_bundles_resolver: "true"
+    
+    #@schema/desc "Setting this flag to `true` enables remote resolution of tasks and pipelines via the Tekton Hub."
+    enable_hub_resolver: "true"
+    
+    #@schema/desc "Setting this flag to `true` enables remote resolution of tasks and pipelines from Git repositories."
+    enable_git_resolver: "true"
+    
+    #@schema/desc "Setting this flag to `true` enables remote resolution of tasks and pipelines from other namespaces within the cluster."
+    enable_cluster_resolver: "true"

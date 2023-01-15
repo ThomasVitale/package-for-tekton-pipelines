@@ -27,35 +27,15 @@ rebaseRules:
   resourceMatchers:
   - apiVersionKindMatcher: {apiVersion: v1, kind: Secret, name: webhook-certs}
 
-#! By default, the changes applied by users to the ConfigMaps used by Tekton Pipelines
+#! Changes applied by users to the ConfigMaps for which this package doesn't provide overlays
 #! are persisted between upgrades.
 - path: [data]
   type: copy
   sources: [existing, new]
   resourceMatchers:
-  - andMatcher:
-      matchers:
-      - apiVersionKindMatcher: {apiVersion: v1, kind: ConfigMap}
-      - hasNamespaceMatcher:
-          names:
-          - tekton-pipelines
-          - tekton-pipelines-resolvers
-
-#! Changes applied by users to the ConfigMaps for which this package provides overlays
-#! are not persisted between upgrades.
-- path: [data]
-  type: copy
-  sources: [new]
-  resourceMatchers:
-  - kindNamespaceNameMatcher: {kind: ConfigMap, namespace: tekton-pipelines, name: config-defaults}
-  - kindNamespaceNameMatcher: {kind: ConfigMap, namespace: tekton-pipelines, name: config-leader-election}
-  - kindNamespaceNameMatcher: {kind: ConfigMap, namespace: tekton-pipelines, name: config-logging}
-  - kindNamespaceNameMatcher: {kind: ConfigMap, namespace: tekton-pipelines, name: config-observability}
-  - kindNamespaceNameMatcher: {kind: ConfigMap, namespace: tekton-pipelines, name: config-registry-cert}
-  - kindNamespaceNameMatcher: {kind: ConfigMap, namespace: tekton-pipelines, name: feature-flags}
-  - kindNamespaceNameMatcher: {kind: ConfigMap, namespace: tekton-pipelines-resolvers, name: config-leader-election}
-  - kindNamespaceNameMatcher: {kind: ConfigMap, namespace: tekton-pipelines-resolvers, name: config-logging}
-  - kindNamespaceNameMatcher: {kind: ConfigMap, namespace: tekton-pipelines-resolvers, name: config-observability}
+  - kindNamespaceNameMatcher: {kind: ConfigMap, namespace: tekton-pipelines, name: config-artifact-bucket}
+  - kindNamespaceNameMatcher: {kind: ConfigMap, namespace: tekton-pipelines, name: config-artifact-pvc}
+  - kindNamespaceNameMatcher: {kind: ConfigMap, namespace: tekton-pipelines, name: config-trusted-resources}
 
 #! This webhook configuration is populated by Tekton Pipelines.
 #! We want to persist those changes between upgrades.
