@@ -1,0 +1,5 @@
+---
+apiVersion: kuttl.dev/v1beta1
+kind: TestStep
+commands:
+  - script: ytt -f ../../setup/assets/rbac.yml --data-value namespace=$NAMESPACE | kapp deploy -a rbac -f- -y
