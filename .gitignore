@@ -2,6 +2,11 @@
 carvel-artifacts/
 repo/
 
+### KUTTL ###
+test/integration/kubeconfig
+test/integration/kuttl-artifacts
+kubeconfig
+
 # Binaries for programs and plugins
 *.exe
 *.exe~
