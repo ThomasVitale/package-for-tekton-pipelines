@@ -8,7 +8,7 @@ jobs:
     name: Configuration Tests
     permissions:
       contents: read
-    uses: kadras-io/github-reusable-workflows/.github/workflows/package-test-config.yml@main
+    uses: kadras-io/github-reusable-workflows/.github/workflows/carvel-package-test-config.yml@main
 
   test-integration:
     name: Integration Tests

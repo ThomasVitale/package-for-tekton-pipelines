@@ -10,9 +10,9 @@ dev: package test/integration
 schema:
 	ytt -f package/config/values-schema.yml --data-values-schema-inspect -o openapi-v3 > package/config/schema-openapi.yml
 
-# Check the ytt-annotated Kubernetes configuration
+# Check the ytt-annotated Kubernetes configuration and its validation
 test-config:
-	ytt --file package/config
+	ytt --file package/config | kubeconform -ignore-missing-schemas -summary
 
 # Run package integration tests
 test-integration: test/integration
