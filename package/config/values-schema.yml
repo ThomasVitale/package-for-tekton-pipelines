@@ -27,6 +27,27 @@ webhook:
     #@schema/desc "Setting this flag to `true` enables a PodDisruptionBudget for the `tekton-pipelines-webhook` Deployment and ensures high availability."
     enable: false
 
+#@schema/desc "Settings for the OpenTelemetry support."
+opentelemetry:
+
+  #@schema/desc "Setting this flag to `true` enables the trace exporter."
+  enable: false
+
+  #@schema/desc "Settings for the OpenTelemetry exporter"
+  exporter:
+
+    #@schema/desc "Configuration for the OpenTelemetry exporter based on the Jaeger protocol."
+    jaeger:
+
+      #@schema/desc "The endpoint where the distributed tracing backend accepts OpenTelemetry traces using the Jaeger protocol."
+      endpoint: ""
+
+      #@schema/desc "The username to access the distributed tracing backend."
+      username: ""
+
+      #@schema/desc "The password/token to authenticate with the distributed tracing backend."
+      password: ""
+
 #@schema/desc "Default configuration stored in the `config-defaults` ConfigMap."
 defaults:
 
@@ -152,10 +173,6 @@ feature_flags:
   #@schema/validation one_of=["true", "false"]
   enable_tekton_oci_bundles: "false"
 
-  #@schema/desc "Setting this flag to `true` enables the use of custom tasks from within pipelines."
-  #@schema/validation one_of=["true", "false"]
-  enable_custom_tasks: "true"
-
   #@schema/desc "Setting this flag will determine which gated features are enabled."
   #@schema/validation one_of=["stable", "beta", "alpha"]
   enable_api_fields: "stable"
@@ -174,11 +191,11 @@ feature_flags:
 
   #@schema/desc "Setting this flag to `full` to enable full embedding of `TaskRun` and `Run` statuses in the `PipelineRun` status. Set it to `minimal` to populate the `ChildReferences` field in the `PipelineRun` status with name, kind, and API version information for each `TaskRun` and `Run` in the `PipelineRun` instead. Set it to `both` to do both."
   #@schema/validation one_of=["full", "minimal", "both"]
-  embedded_status: "full"
+  embedded_status: "minimal"
 
   #@schema/desc "Setting this flag will determine the version for custom tasks created by PipelineRuns."
   #@schema/validation one_of=["v1alpha1", "v1beta1"]
-  custom_task_version: "v1alpha1"
+  custom_task_version: "v1beta1"
 
 #@schema/desc "Configuration for the Tekton Resolvers, responsible for resolving requests for Tasks and Pipelines from remote locations."
 resolvers:

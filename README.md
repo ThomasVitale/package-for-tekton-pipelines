@@ -1,6 +1,9 @@
 # Tekton Pipelines
 
-<a href="https://slsa.dev/spec/v0.1/levels"><img src="https://slsa.dev/images/gh-badge-level3.svg" alt="The SLSA Level 3 badge"></a>
+![Test Workflow](https://github.com/kadras-io/package-for-tekton-pipelines/actions/workflows/test.yml/badge.svg)
+![Release Workflow](https://github.com/kadras-io/package-for-tekton-pipelines/actions/workflows/release.yml/badge.svg)
+[![The SLSA Level 3 badge](https://slsa.dev/images/gh-badge-level3.svg)](https://slsa.dev/spec/v0.1/levels)
+[![The Apache 2.0 license badge](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
 This project provides a [Carvel package](https://carvel.dev/kapp-controller/docs/latest/packaging) for [Tekton Pipelines](https://tekton.dev/docs/pipelines), a cloud-native solution for building CI/CD systems.
 
@@ -77,7 +80,10 @@ The Tekton Pipelines package has the following configurable properties.
 | `controller.replicas` | `1` | The number of replicas for the `tekton-pipelines-controller` Deployment. In order to enable high availability, it should be greater than 1. |
 | `resolver.replicas` | `1` | The number of replicas for the `tekton-pipelines-remote-resolvers` Deployment. In order to enable high availability, it should be greater than 1. |
 | `webhook.pdb.enable` | `false` | Setting this flag to `true` enables a PodDisruptionBudget for the `tekton-pipelines-webhook` Deployment and ensures high availability. |
-
+| `opentelemetry.enable` | `false` | Setting this flag to `true` enables the OpenTelemetry instrumentation and exporter. |
+| `opentelemetry.exporter.jaeger.endpoint` | `""` | The endpoint where the distributed tracing backend accepts OpenTelemetry traces using the Jaeger protocol. |
+| `opentelemetry.exporter.jaeger.endpoint` | `""` | The username to access the distributed tracing backend. Optional. |
+| `opentelemetry.exporter.jaeger.endpoint` | `""` | The password/token to authenticate with the distributed tracing backend. Optional. |
 
 Default configuration stored in the `config-defaults` ConfigMap.
 
@@ -132,13 +138,12 @@ Feature flags configuration stored in the `feature-flags` ConfigMap.
 | `feature_flags.running_in_environment_with_injected_sidecars` | `true` | This option should be set to `false` when Pipelines is running in a cluster that does not use injected sidecars such as Istio. Setting it to false should decrease the time it takes for a TaskRun to start running. For clusters that use injected sidecars, setting this option to false can lead to unexpected behavior. |
 | `feature_flags.require_git_ssh_secret_known_hosts` | `false` | Setting this flag to `true` will require that any Git SSH Secret offered to Tekton must have known_hosts included. |
 | `feature_flags.enable_tekton_oci_bundles` | `false` | Setting this flag to `true` enables the use of Tekton OCI bundle. This is an experimental feature and thus should still be considered an alpha feature. |
-| `feature_flags.enable_custom_tasks` | `true` | Setting this flag to `true` enables the use of custom tasks from within pipelines. |
 | `feature_flags.enable_api_fields` | `stable` | Setting this flag will determine which gated features are enabled. Support values: `stable`, `beta`, `alpha`. |
 | `feature_flags.send_cloudevents_for_runs` | `false` | Setting this flag to `true` enables CloudEvents for CustomRuns and Runs, as long as a CloudEvents sink is configured in the `config-defaults` ConfigMap. |
 | `feature_flags.resource_verification_mode` | `skip` | Setting this flag to `enforce` will enforce verification of tasks/pipelines. Failing to verify will fail the TaskRun/PipelineRun. `warn` will only log the err message and `skip` will skip the whole verification. |
 | `feature_flags.enable_provenance_in_status` | `false` | Setting this flag to `true` enables populating the `provenance` field in TaskRun and PipelineRun status. This field contains metadata about resources used in the TaskRun/PipelineRun such as the source from where a remote Task/Pipeline definition was fetched. |
-| `feature_flags.embedded_status` | `full` | Setting this flag to `full` to enable full embedding of `TaskRun` and `Run` statuses in the `PipelineRun` status. Set it to `minimal` to populate the `ChildReferences` field in the `PipelineRun` status with name, kind, and API version information for each `TaskRun` and `Run` in the `PipelineRun` instead. Set it to `both` to do both. |
-| `feature_flags.custom_task_version` | `v1alpha1` | Setting this flag will determine the version for custom tasks created by PipelineRuns. Supported values: `v1alpha1`, `v1beta1`. |
+| `feature_flags.embedded_status` | `minimal` | Setting this flag to `full` to enable full embedding of `TaskRun` and `Run` statuses in the `PipelineRun` status. Set it to `minimal` to populate the `ChildReferences` field in the `PipelineRun` status with name, kind, and API version information for each `TaskRun` and `Run` in the `PipelineRun` instead. Set it to `both` to do both. |
+| `feature_flags.custom_task_version` | `v1beta1` | Setting this flag will determine the version for custom tasks created by PipelineRuns. Supported values: `v1alpha1`, `v1beta1`. |
 
 Configuration for the bundle resolver stored in the `bundleresolver-config` ConfigMap.
 
