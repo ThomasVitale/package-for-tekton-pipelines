@@ -78,6 +78,22 @@ observability:
 
 For more information, check the Tekton Pipelines documentation for [metrics](https://tekton.dev/docs/pipelines/metrics/).
 
+## Traces
+
+The Tekton Pipelines controller can be configured to enable its OpenTelemetry instrumentation to generate traces and export them suing the Jaeger Thrift protocol. Username and password are optional settings.
+
+By default, the distributed tracing support is disabled.
+
+```yaml
+opentelemetry:
+  enable: true
+  exporter:
+    jaeger:
+      endpoint: "http://tempo.observability.svc.cluster.local:14268/api/traces"
+      username: "jon"
+      password: "snow"
+```
+
 ## Example with Grafana OSS
 
 When using the Grafana OSS observability stack, you might refer to this [dashboard](https://github.com/mgreau/tekton-pipelines-elastic-o11y) as a foundation to build your own.

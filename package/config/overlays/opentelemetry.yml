@@ -1,0 +1,26 @@
+#@ load("@ytt:data", "data")
+#@ load("@ytt:overlay", "overlay")
+
+#@ if data.values.opentelemetry.enable:
+
+#@overlay/match by=overlay.subset({"kind":"Deployment", "metadata":{"name":"tekton-pipelines-controller", "namespace": "tekton-pipelines"}}), expects=1
+---
+spec:
+  template:
+    spec:
+      containers:
+        #@overlay/match by="name"
+        - name: tekton-pipelines-controller
+          env:
+            #@overlay/match by=overlay.index(0)
+            #@overlay/append
+            - name: OTEL_EXPORTER_JAEGER_ENDPOINT
+              value: #@ data.values.opentelemetry.exporter.jaeger.endpoint
+            #@ if/end data.values.opentelemetry.exporter.jaeger.username:
+            - name: OTEL_EXPORTER_JAEGER_USER
+              value: #@ data.values.opentelemetry.exporter.jaeger.username
+            #@ if/end data.values.opentelemetry.exporter.jaeger.password :
+            - name: OTEL_EXPORTER_JAEGER_PASSWORD
+              value: #@ data.values.opentelemetry.exporter.jaeger.password  
+
+#@ end

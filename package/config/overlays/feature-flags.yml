@@ -30,10 +30,6 @@ data:
   #@overlay/replace
   enable-tekton-oci-bundles: #@ data.values.feature_flags.enable_tekton_oci_bundles
 
-  #@ if/end data.values.feature_flags.enable_custom_tasks:
-  #@overlay/replace
-  enable-custom-tasks: #@ data.values.feature_flags.enable_custom_tasks
-
   #@ if/end data.values.feature_flags.enable_api_fields:
   #@overlay/replace
   enable-api-fields: #@ data.values.feature_flags.enable_api_fields
