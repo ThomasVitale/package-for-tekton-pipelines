@@ -2,7 +2,7 @@
 name: Bug report
 about: Tell us about a problem you are experiencing
 title: ''
-labels: bug
+labels: bug, triage
 assignees: ''
 
 ---
@@ -18,9 +18,6 @@ assignees: ''
 
 **Anything else you would like to add:**
 [Additional information that will assist in solving the issue.]
-
-**Additional context:**
-Add any other context about the problem here.
 
 **Environment:**
 

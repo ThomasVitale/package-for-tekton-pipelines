@@ -17,7 +17,7 @@ ytt:
 
 # Use ytt to generate an OpenAPI specification
 schema:
-	ytt -f package/config/values-schema.yml --data-values-schema-inspect -o openapi-v3 > package/config/schema-openapi.yml
+	ytt -f package/config/values-schema.yml --data-values-schema-inspect -o openapi-v3 > schema-openapi.yml
 
 # Check the ytt-annotated Kubernetes configuration and its validation
 test-config:
@@ -26,3 +26,10 @@ test-config:
 # Run package integration tests
 test-integration: test/integration
 	kubectl kuttl test --config test/integration/kuttl-test.yaml --kind-config test/integration/setup/kind/$(K8S_VERSION)/kind-config.yaml
+
+# Feature-based tests (to be refined and automated further)
+test-observability: test/integration
+	cd package && ytt -f ../test/integration/tests/observability -f package-resources.yml | kctrl dev -f- --local -y
+
+test-high-availability: test/integration
+	cd package && ytt -f ../test/integration/tests/high-availability -f package-resources.yml | kctrl dev -f- --local -y

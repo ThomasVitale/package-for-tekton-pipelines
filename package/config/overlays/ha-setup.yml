@@ -2,7 +2,7 @@
 #@ load("@ytt:overlay", "overlay")
 
 #! Tekton Pipelines can be configured with high availability support.
-#! See: https://tekton.dev/docs/pipelines/enabling-ha/#webhook-ha
+#! See: https://tekton.dev/docs/pipelines/enabling-ha
 
 #@overlay/match by=overlay.subset({"kind":"Deployment", "metadata":{"name":"tekton-pipelines-controller", "namespace": "tekton-pipelines"}}), expects=1
 ---

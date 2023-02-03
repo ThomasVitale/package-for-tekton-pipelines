@@ -1,0 +1,40 @@
+#@ load("@ytt:data", "data")
+
+#@ if data.values.policies.include:
+---
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: tekton-pipelines-verify-image
+  annotations:
+    policies.kyverno.io/title: Verify Image
+    policies.kyverno.io/category: Software Supply Chain Security
+    policies.kyverno.io/severity: high
+    policies.kyverno.io/subject: Pod
+    policies.kyverno.io/minversion: 1.9.0
+    policies.kyverno.io/description: >-
+      Using the Cosign project, this policy checks all container images used by this package
+      to ensure they have been signed by verifying their signatures against the provided public key. 
+spec:
+  validationFailureAction: Enforce
+  webhookTimeoutSeconds: 30
+  rules:
+    - name: verify-signature
+      match:
+        any:
+        - resources:
+            kinds:
+              - Pod
+      verifyImages:
+      - imageReferences:
+        - "gcr.io/tekton-releases/github.com/tektoncd/pipeline*"
+        attestors:
+        - entries:
+          - keys:
+              #! https://raw.githubusercontent.com/tektoncd/chains/main/tekton.pub
+              publicKeys: |
+                -----BEGIN PUBLIC KEY-----
+                MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEnLNw3RYx9xQjXbUEw8vonX3U4+tB
+                kPnJq+zt386SCoG0ewIH5MB8+GjIDGArUULSDfjfM31Eae/71kavAUI0OA==
+                -----END PUBLIC KEY-----
+#@ end

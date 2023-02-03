@@ -4,47 +4,42 @@
 #@schema/desc "Self-signed certificate for the private container registry storing the images used in Tekton Tasks (PEM-encoded format)."
 ca_cert_data: ""
 
+#@schema/desc "Settings for the Kyverno policies."
+policies:
+  #@schema/desc "Whether to include the out-of-the-box Kyverno policies to validate and secure the package installation."
+  include: false
+
 #@schema/desc "Settings for the `tekton-pipelines-controller` Deployment."
 controller:
-
   #@schema/desc "The number of replicas for the `tekton-pipelines-controller` Deployment. In order to enable high availability, it should be greater than 1."
   #@schema/validation min=1
   replicas: 1
 
 #@schema/desc "Settings for the `tekton-pipelines-remote-resolvers` Deployment."
 resolver:
-
   #@schema/desc "The number of replicas. In order to enable high availability, it should be greater than 1."
   #@schema/validation min=1
   replicas: 1
 
 #@schema/desc "Settings for the `tekton-pipelines-webhook` Deployment."
 webhook:
-
   #@schema/desc "PodDisruptionBudget configuration for the `tekton-pipelines-webhook` Deployment."
   pdb:
-
     #@schema/desc "Setting this flag to `true` enables a PodDisruptionBudget for the `tekton-pipelines-webhook` Deployment and ensures high availability."
     enable: false
 
 #@schema/desc "Settings for the OpenTelemetry support."
 opentelemetry:
-
   #@schema/desc "Setting this flag to `true` enables the trace exporter."
   enable: false
-
   #@schema/desc "Settings for the OpenTelemetry exporter"
   exporter:
-
     #@schema/desc "Configuration for the OpenTelemetry exporter based on the Jaeger protocol."
     jaeger:
-
       #@schema/desc "The endpoint where the distributed tracing backend accepts OpenTelemetry traces using the Jaeger protocol."
       endpoint: ""
-
       #@schema/desc "The username to access the distributed tracing backend."
       username: ""
-
       #@schema/desc "The password/token to authenticate with the distributed tracing backend."
       password: ""
 

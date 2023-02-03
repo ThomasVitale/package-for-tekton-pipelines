@@ -4,10 +4,13 @@
 ![Release Workflow](https://github.com/kadras-io/package-for-tekton-pipelines/actions/workflows/release.yml/badge.svg)
 [![The SLSA Level 3 badge](https://slsa.dev/images/gh-badge-level3.svg)](https://slsa.dev/spec/v0.1/levels)
 [![The Apache 2.0 license badge](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+[![Follow us on Twitter](https://img.shields.io/static/v1?label=Twitter&message=Follow&color=1DA1F2)](https://twitter.com/kadrasIO)
 
-This project provides a [Carvel package](https://carvel.dev/kapp-controller/docs/latest/packaging) for [Tekton Pipelines](https://tekton.dev/docs/pipelines), a cloud-native solution for building CI/CD systems.
+A Carvel package for [Tekton Pipelines](https://tekton.dev/docs/pipelines), a cloud-native solution for building CI/CD systems.
 
-## Prerequisites
+## 🚀&nbsp; Getting Started
+
+### Prerequisites
 
 * Kubernetes 1.24+
 * Carvel [`kctrl`](https://carvel.dev/kapp-controller/docs/latest/install/#installing-kapp-controller-cli-kctrl) CLI.
@@ -18,14 +21,14 @@ This project provides a [Carvel package](https://carvel.dev/kapp-controller/docs
     -f https://github.com/carvel-dev/carvel-kapp-controller/releases/latest/download/release.yml
   ```
 
-## Dependencies
+### Dependencies
 
-If you want to enable support for high availability, Tekton Pipelines requires Metrics Server to be installed in your Kubernetes cluster.
-You can install the [Metrics Server](https://github.com/kadras-io/package-for-metrics-server) package from the [Kadras package repository](https://github.com/kadras-io/kadras-packages).
+* If you want to enable support for high availability, Tekton Pipelines requires [Metrics Server](https://github.com/kadras-io/package-for-metrics-server) to be installed in your Kubernetes cluster.
+* If you want to include the out-of-the-box policies to validate and secure the package installation and behaviour, [Kyverno](https://kyverno.io) must be installed in your Kubernetes cluster.
 
-## Installation
+### Installation
 
-First, add the [Kadras package repository](https://github.com/kadras-io/kadras-packages) to your Kubernetes cluster.
+Add the Kadras [package repository](https://github.com/kadras-io/kadras-packages) to your Kubernetes cluster:
 
   ```shell
   kubectl create namespace kadras-packages
@@ -36,7 +39,7 @@ First, add the [Kadras package repository](https://github.com/kadras-io/kadras-p
 
 <details><summary>Installation without package repository</summary>
 <p>
-The recommended way of installing the Tekton Pipelines package is via the <a href="https://github.com/kadras-io/kadras-packages">Kadras package repository</a>. If you prefer not using the repository, you can add the package metadata directly by creating the necessary resources using <a href="https://carvel.dev/kapp/docs/latest/install"><code>kapp</code></a> or <code>kubectl</code>.
+The recommended way of installing the Tekton Pipelines package is via the Kadras <a href="https://github.com/kadras-io/kadras-packages">package repository</a>. If you prefer not using the repository, you can add the package definition directly using <a href="https://carvel.dev/kapp/docs/latest/install"><code>kapp</code></a> or <code>kubectl</code>.
 
   ```shell
   kubectl create namespace kadras-packages
@@ -47,7 +50,7 @@ The recommended way of installing the Tekton Pipelines package is via the <a hre
 </p>
 </details>
 
-Then, install the Tekton Pipelines package.
+Install the Tekton Pipelines package:
 
   ```shell
   kctrl package install -i tekton-pipelines \
@@ -56,27 +59,54 @@ Then, install the Tekton Pipelines package.
     -n kadras-packages
   ```
 
-You can find the `${VERSION}` value by retrieving the list of package versions available in the Kadras package repository installed on your cluster.
+> **Note**
+> You can find the `${VERSION}` value by retrieving the list of package versions available in the Kadras package repository installed on your cluster.
+> 
+>   ```shell
+>   kctrl package available list -p tekton-pipelines.packages.kadras.io -n kadras-packages
+>   ```
 
-  ```shell
-  kctrl package available list -p tekton-pipelines.packages.kadras.io -n kadras-packages
-  ```
-
-### Verification
-
-You can verify the installed packages and their status as follows.
+Verify the installed packages and their status:
 
   ```shell
   kctrl package installed list -n kadras-packages
   ```
 
-## Configuration
+## 📙&nbsp; Documentation
+
+Documentation, tutorials and examples for this package are available in the [docs](docs) folder.
+For documentation specific to Tekton Pipelines, check out [tekton.dev](https://tekton.dev).
+
+## 🎯&nbsp; Configuration
+
+The Tekton Pipelines package can be customized via a `values.yml` file.
+
+  ```yaml
+  opentelemetry:
+    enable: true
+    exporter:
+      jaeger:
+        endpoint: http://tempo.observability:14268/api/traces
+  ```
+
+Reference the `values.yml` file from the `kctrl` command when installing or upgrading the package.
+
+  ```shell
+  kctrl package install -i tekton-pipelines \
+    -p tekton-pipelines.packages.kadras.io \
+    -v ${VERSION} \
+    -n kadras-packages \
+    --values-file values.yml
+  ```
+
+### Values
 
 The Tekton Pipelines package has the following configurable properties.
 
 | Config | Default | Description |
 |-------|-------------------|-------------|
 | `ca_cert_data` | `""` | Self-signed certificate for the private container registry storing the images used in Tekton Tasks (PEM-encoded format). |
+| `policies.include` | `false` | Whether to include the out-of-the-box Kyverno policies to validate and secure the package installation. |
 | `controller.replicas` | `1` | The number of replicas for the `tekton-pipelines-controller` Deployment. In order to enable high availability, it should be greater than 1. |
 | `resolver.replicas` | `1` | The number of replicas for the `tekton-pipelines-remote-resolvers` Deployment. In order to enable high availability, it should be greater than 1. |
 | `webhook.pdb.enable` | `false` | Setting this flag to `true` enables a PodDisruptionBudget for the `tekton-pipelines-webhook` Deployment and ensures high availability. |
@@ -194,40 +224,10 @@ Feature flags configuration stored in the `resolvers-feature-flags` ConfigMap.
 | `resolvers.feature_flags.enable_git_resolver` | `true` | Setting this flag to `true` enables remote resolution of tasks and pipelines from Git repositories. |
 | `resolvers.feature_flags.enable_cluster_resolver` | `true` | Setting this flag to `true` enables remote resolution of tasks and pipelines from other namespaces within the cluster. |
 
-You can define your configuration in a `values.yml` file.
+## 🛡️&nbsp; Security
 
-  ```yaml
-  controller:
-    replicas: 3
+The security process for reporting vulnerabilities is described in [SECURITY.md](SECURITY.md).
 
-  resolver:
-    replicas: 3
+## 🖊️&nbsp; License
 
-  webhook:
-    pdb:
-      enable: true
-
-  feature_flags:
-    enable_provenance_in_status: "true"
-  ```
-
-Then, reference it from the `kctrl` command when installing or upgrading the package.
-
-  ```shell
-  kctrl package install -i tekton-pipelines \
-    -p tekton-pipelines.packages.kadras.io \
-    -v ${VERSION} \
-    -n kadras-packages \
-    --values-file values.yml
-  ```
-
-## Support and Documentation
-
-Additional documentation, tutorials and examples about this package are available on [kadras.io](https://kadras.io).
-For support and documentation specific to Tekton Pipelines, check out [tekton.dev](https://tekton.dev).
-
-## Supply Chain Security
-
-This project is compliant with level 3 of the [SLSA Framework](https://slsa.dev).
-
-<img src="https://slsa.dev/images/SLSA-Badge-full-level3.svg" alt="The SLSA Level 3 badge" width=200>
+This project is licensed under the **Apache License 2.0**. See [LICENSE](LICENSE) for more information.
