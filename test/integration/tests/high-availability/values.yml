@@ -1,0 +1,22 @@
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: tekton-pipelines-values
+  namespace: carvel-dev
+stringData:
+  values.yaml: |
+    controller:
+      replicas: 3
+    resolver:
+      replicas: 3
+
+    leader_election:
+      lease_duration: "60s"
+      renew_deadline: "40s"
+      retry_period: "10s"
+      buckets: "3"
+
+    webhook:
+      pdb:
+        enable: true

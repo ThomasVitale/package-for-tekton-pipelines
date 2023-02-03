@@ -1,6 +1,7 @@
 ### Carvel ###
 carvel-artifacts/
 repo/
+schema-openapi
 
 ### KUTTL ###
 test/integration/kubeconfig

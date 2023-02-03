@@ -1,8 +1,8 @@
-# Configuring High Availability
+# High Availability
 
 Tekton Pipelines can run in high availability using different strategies for controllers and webhooks.
 
-## Controllers
+## Scaling the control plane (controllers)
 
 High availability for controllers is provided via a leader election strategy.
 
@@ -29,7 +29,7 @@ leader_election:
 
 You can disable the high availability setup (default mode) by scaling down each component's replicas to 1.
 
-## Webhook
+## Scaling the data plane (webhooks)
 
 High availability for webhooks is provided via a combination of autoscaling and pod disruption budgets.
 
