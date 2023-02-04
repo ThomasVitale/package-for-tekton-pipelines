@@ -8,13 +8,13 @@
 ---
 spec:
   #@overlay/match missing_ok=True
-  replicas: #@ data.values.controller.replicas
+  replicas: #@ data.values.controllers.pipelines.replicas
 
 #@overlay/match by=overlay.subset({"kind":"Deployment", "metadata":{"name":"tekton-pipelines-remote-resolvers", "namespace": "tekton-pipelines-resolvers"}}), expects=1
 ---
 spec:
   #@overlay/match missing_ok=True
-  replicas: #@ data.values.resolver.replicas
+  replicas: #@ data.values.controllers.resolvers.replicas
 
 #@ if data.values.webhook.pdb.enable:
 
