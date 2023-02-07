@@ -3,13 +3,14 @@ apiVersion: v1
 kind: Secret
 metadata:
   name: tekton-pipelines-values
-  namespace: carvel-dev
+  namespace: tests
 stringData:
   values.yaml: |
-    controller:
-      replicas: 3
-    resolver:
-      replicas: 3
+    controllers:
+      pipelines:
+        replicas: 3
+      resolvers:
+        replicas: 3
 
     leader_election:
       lease_duration: "60s"

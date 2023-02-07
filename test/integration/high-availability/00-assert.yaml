@@ -1,0 +1,38 @@
+# High Availability - Controllers
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: tekton-pipelines
+spec:
+  replicas: 3
+status:
+  readyReplicas: 3
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: tekton-pipelines-resolvers
+spec:
+  replicas: 3
+status:
+  readyReplicas: 3
+
+# High Availability - Webhooks
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: tekton-pipelines-webhook
+  namespace: tekton-pipelines
+spec:
+  minReplicas: 2
+  maxReplicas: 5
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: tekton-pipelines-webhook
+  namespace: tekton-pipelines
+spec:
+  minAvailable: 50%

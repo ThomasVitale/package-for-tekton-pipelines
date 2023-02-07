@@ -33,7 +33,6 @@ Add the Kadras [package repository](https://github.com/kadras-io/kadras-packages
   ```
 
 <details><summary>Installation without package repository</summary>
-<p>
 The recommended way of installing the Tekton Pipelines package is via the Kadras <a href="https://github.com/kadras-io/kadras-packages">package repository</a>. If you prefer not using the repository, you can add the package definition directly using <a href="https://carvel.dev/kapp/docs/latest/install"><code>kapp</code></a> or <code>kubectl</code>.
 
   ```shell
@@ -42,7 +41,6 @@ The recommended way of installing the Tekton Pipelines package is via the Kadras
     -f https://github.com/kadras-io/package-for-tekton-pipelines/releases/latest/download/metadata.yml \
     -f https://github.com/kadras-io/package-for-tekton-pipelines/releases/latest/download/package.yml
   ```
-</p>
 </details>
 
 Install the Tekton Pipelines package:
@@ -97,6 +95,8 @@ Reference the `values.yml` file from the `kctrl` command when installing or upgr
 ### Values
 
 The Tekton Pipelines package has the following configurable properties.
+
+<details><summary>Configurable properties</summary>
 
 | Config | Default | Description |
 |-------|-------------------|-------------|
@@ -218,6 +218,8 @@ Feature flags configuration stored in the `resolvers-feature-flags` ConfigMap.
 | `resolvers.feature_flags.enable_hub_resolver` | `true` | Setting this flag to `true` enables remote resolution of tasks and pipelines via the Tekton Hub. |
 | `resolvers.feature_flags.enable_git_resolver` | `true` | Setting this flag to `true` enables remote resolution of tasks and pipelines from Git repositories. |
 | `resolvers.feature_flags.enable_cluster_resolver` | `true` | Setting this flag to `true` enables remote resolution of tasks and pipelines from other namespaces within the cluster. |
+
+</details>
 
 ## 🛡️&nbsp; Security
 
