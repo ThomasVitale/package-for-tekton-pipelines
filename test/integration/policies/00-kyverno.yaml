@@ -3,4 +3,4 @@ apiVersion: kuttl.dev/v1beta1
 kind: TestStep
 commands:
   - script: |
-      helm install kyverno kyverno/kyverno -n kyverno --create-namespace --set replicaCount=1
+      kubectl apply -f https://github.com/kyverno/kyverno/releases/download/v1.9.0/install.yaml
