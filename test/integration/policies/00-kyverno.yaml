@@ -1,0 +1,6 @@
+---
+apiVersion: kuttl.dev/v1beta1
+kind: TestStep
+commands:
+  - script: |
+      helm install kyverno kyverno/kyverno -n kyverno --create-namespace --set replicaCount=1
