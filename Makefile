@@ -1,11 +1,10 @@
 K8S_VERSION=v1.26
-DEV_NAMESPACE=carvel-dev
 
 # Prepare cluster for development workflow
-prepare: test/integration/setup
-	ytt -f test/integration/setup/assets/namespace.yml --data-value namespace=$(DEV_NAMESPACE) | kapp deploy -a ns -f- -y
-	ytt -f test/integration/setup/assets/rbac.yml --data-value namespace=$(DEV_NAMESPACE) | kapp deploy -a rbac -f- -y
-	kubectl config set-context --current --namespace=$(DEV_NAMESPACE)
+prepare: test/setup
+	ytt -f test/setup/assets/namespace.yml | kapp deploy -a ns -f- -y
+	ytt -f test/setup/assets/rbac.yml | kapp deploy -a rbac -f- -y
+	kubectl config set-context --current --namespace=tests
 
 # Inner development loop
 dev: package
@@ -21,15 +20,8 @@ schema:
 
 # Check the ytt-annotated Kubernetes configuration and its validation
 test-config:
-	ytt --file package/config | kubeconform -ignore-missing-schemas -summary
+	ytt -f package/config | kubeconform -ignore-missing-schemas -summary
 
 # Run package integration tests
 test-integration: test/integration
-	kubectl kuttl test --config test/integration/kuttl-test.yaml --kind-config test/integration/setup/kind/$(K8S_VERSION)/kind-config.yaml
-
-# Feature-based tests (to be refined and automated further)
-test-observability: test/integration
-	cd package && ytt -f ../test/integration/tests/observability -f package-resources.yml | kctrl dev -f- --local -y
-
-test-high-availability: test/integration
-	cd package && ytt -f ../test/integration/tests/high-availability -f package-resources.yml | kctrl dev -f- --local -y
+	kubectl kuttl test --config test/integration/kuttl-test.yml --kind-config test/setup/kind/$(K8S_VERSION)/kind-config.yml

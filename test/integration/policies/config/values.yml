@@ -1,0 +1,10 @@
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: tekton-pipelines-values
+  namespace: tests
+stringData:
+  values.yaml: |
+    policies:
+      include: true

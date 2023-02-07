@@ -18,13 +18,8 @@ A Carvel package for [Tekton Pipelines](https://tekton.dev/docs/pipelines), a cl
 
   ```shell
   kapp deploy -a kapp-controller -y \
-    -f https://github.com/carvel-dev/carvel-kapp-controller/releases/latest/download/release.yml
+    -f https://github.com/carvel-dev/kapp-controller/releases/latest/download/release.yml
   ```
-
-### Dependencies
-
-* If you want to enable support for high availability, Tekton Pipelines requires [Metrics Server](https://github.com/kadras-io/package-for-metrics-server) to be installed in your Kubernetes cluster.
-* If you want to include the out-of-the-box policies to validate and secure the package installation and behaviour, [Kyverno](https://kyverno.io) must be installed in your Kubernetes cluster.
 
 ### Installation
 
@@ -38,7 +33,6 @@ Add the Kadras [package repository](https://github.com/kadras-io/kadras-packages
   ```
 
 <details><summary>Installation without package repository</summary>
-<p>
 The recommended way of installing the Tekton Pipelines package is via the Kadras <a href="https://github.com/kadras-io/kadras-packages">package repository</a>. If you prefer not using the repository, you can add the package definition directly using <a href="https://carvel.dev/kapp/docs/latest/install"><code>kapp</code></a> or <code>kubectl</code>.
 
   ```shell
@@ -47,7 +41,6 @@ The recommended way of installing the Tekton Pipelines package is via the Kadras
     -f https://github.com/kadras-io/package-for-tekton-pipelines/releases/latest/download/metadata.yml \
     -f https://github.com/kadras-io/package-for-tekton-pipelines/releases/latest/download/package.yml
   ```
-</p>
 </details>
 
 Install the Tekton Pipelines package:
@@ -103,12 +96,14 @@ Reference the `values.yml` file from the `kctrl` command when installing or upgr
 
 The Tekton Pipelines package has the following configurable properties.
 
+<details><summary>Configurable properties</summary>
+
 | Config | Default | Description |
 |-------|-------------------|-------------|
 | `ca_cert_data` | `""` | Self-signed certificate for the private container registry storing the images used in Tekton Tasks (PEM-encoded format). |
 | `policies.include` | `false` | Whether to include the out-of-the-box Kyverno policies to validate and secure the package installation. |
-| `controller.replicas` | `1` | The number of replicas for the `tekton-pipelines-controller` Deployment. In order to enable high availability, it should be greater than 1. |
-| `resolver.replicas` | `1` | The number of replicas for the `tekton-pipelines-remote-resolvers` Deployment. In order to enable high availability, it should be greater than 1. |
+| `controllers.pipelines.replicas` | `1` | The number of replicas for the `tekton-pipelines-controller` Deployment. In order to enable high availability, it should be greater than 1. |
+| `controllers.resolvers.replicas` | `1` | The number of replicas for the `tekton-pipelines-remote-resolvers` Deployment. In order to enable high availability, it should be greater than 1. |
 | `webhook.pdb.enable` | `false` | Setting this flag to `true` enables a PodDisruptionBudget for the `tekton-pipelines-webhook` Deployment and ensures high availability. |
 | `opentelemetry.enable` | `false` | Setting this flag to `true` enables the OpenTelemetry instrumentation and exporter. |
 | `opentelemetry.exporter.jaeger.endpoint` | `""` | The endpoint where the distributed tracing backend accepts OpenTelemetry traces using the Jaeger protocol. |
@@ -223,6 +218,8 @@ Feature flags configuration stored in the `resolvers-feature-flags` ConfigMap.
 | `resolvers.feature_flags.enable_hub_resolver` | `true` | Setting this flag to `true` enables remote resolution of tasks and pipelines via the Tekton Hub. |
 | `resolvers.feature_flags.enable_git_resolver` | `true` | Setting this flag to `true` enables remote resolution of tasks and pipelines from Git repositories. |
 | `resolvers.feature_flags.enable_cluster_resolver` | `true` | Setting this flag to `true` enables remote resolution of tasks and pipelines from other namespaces within the cluster. |
+
+</details>
 
 ## 🛡️&nbsp; Security
 

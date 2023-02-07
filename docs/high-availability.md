@@ -1,23 +1,12 @@
-# High Availability
+# Configuring High Availability
 
-Tekton Pipelines can run in high availability using different strategies for controllers and webhooks.
+High availability for Tekton Pipelines can be configured using different strategies for the controllers and the webhooks.
 
-## Scaling the control plane (controllers)
+## High availability for the controllers
 
-High availability for controllers is provided via a leader election strategy.
+The Tekton Pipelines controllers support high availability following an active/active model based on the leader election strategy. Work is distributed among replicas based on buckets.
 
-First, define at least 3 replicas for each component.
-
-```yaml
-controller:
-  replicas: 3
-resolver:
-  replicas: 3
-```
-
-Then, configure the leader election strategy based on your needs.
-
-Leader election
+The leader election configuration is managed via the `leader_election.*` properties (customizing the `config-leader-election` ConfigMap in each namespace used by Tekton Pipelines).
 
 ```yaml
 leader_election:
@@ -27,14 +16,23 @@ leader_election:
   buckets: "3"
 ```
 
-You can disable the high availability setup (default mode) by scaling down each component's replicas to 1.
+By default, only one replica for each controller is deployed, meaning high availability is disabled. To enable high availability, it's recommended to configure at least 3 replicas for each controller.
 
-## Scaling the data plane (webhooks)
+```yaml
+controllers:
+  pipelines:
+    replicas: 3
+  resolvers:
+    replicas: 3
+```
 
-High availability for webhooks is provided via a combination of autoscaling and pod disruption budgets.
+You can disable high availability for the Tekton Pipelines controllers by scaling them down to 1 replica (default mode).
 
-To enable the high availability setup for webhooks, apply the following configuration when installing
-the package. By default, it's disabled.
+## High availability for the webhooks
+
+High availability for the Tekton Pipelines webhook is controlled by a `HorizontalPodAutoscaler`, and requires [Metrics Server](https://github.com/kadras-io/package-for-metrics-server) to be installed in your Kubernetes cluster.
+
+The following configuration enables the high availability setup (by default, it's disabled) so that the `HorizontalPodAutoscaler` ensures a minimum of 2 replicas and a `PodDisruptionBudget` prevents downtime during node unavailability.
 
 ```yaml
 webhook:

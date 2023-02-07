@@ -1,4 +1,4 @@
-# Configuring Self-Signed Certificates
+# Configuring a Self-Signed Certificate for a Private Registry
 
 If you need to interact with a private registry using a self-signed certificate, you can pass it as a
 PEM-encoded bundle when installing/upgrading the package.

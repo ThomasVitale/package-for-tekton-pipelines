@@ -1,0 +1,46 @@
+# OpenTelemetry
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: tekton-pipelines
+  name: tekton-pipelines-controller
+spec:
+  template:
+    spec:
+      containers:
+        - name: tekton-pipelines-controller
+          env:
+            - name: SYSTEM_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  apiVersion: v1
+                  fieldPath: metadata.namespace
+            - name: CONFIG_DEFAULTS_NAME
+              value: config-defaults
+            - name: CONFIG_LOGGING_NAME
+              value: config-logging
+            - name: CONFIG_OBSERVABILITY_NAME
+              value: config-observability
+            - name: CONFIG_ARTIFACT_BUCKET_NAME
+              value: config-artifact-bucket
+            - name: CONFIG_ARTIFACT_PVC_NAME
+              value: config-artifact-pvc
+            - name: CONFIG_FEATURE_FLAGS_NAME
+              value: feature-flags
+            - name: CONFIG_LEADERELECTION_NAME
+              value: config-leader-election
+            - name: CONFIG_TRUSTED_RESOURCES_NAME
+              value: config-trusted-resources
+            - name: SSL_CERT_FILE
+              value: /etc/config-registry-cert/cert
+            - name: SSL_CERT_DIR
+              value: /etc/ssl/certs
+            - name: METRICS_DOMAIN
+              value: tekton.dev/pipeline
+            - name: OTEL_EXPORTER_JAEGER_ENDPOINT
+              value: http://tempo.observability-stack:14268/api/traces
+            - name: OTEL_EXPORTER_JAEGER_USER
+              value: jon
+            - name: OTEL_EXPORTER_JAEGER_PASSWORD
+              value: snow
