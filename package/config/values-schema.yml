@@ -24,10 +24,9 @@ controllers:
 
 #@schema/desc "Settings for the `tekton-pipelines-webhook` Deployment."
 webhook:
-  #@schema/desc "PodDisruptionBudget configuration for the `tekton-pipelines-webhook` Deployment."
-  pdb:
-    #@schema/desc "Setting this flag to `true` enables a PodDisruptionBudget for the `tekton-pipelines-webhook` Deployment and ensures high availability."
-    enable: false
+  #@schema/desc "The minimum number of replicas as controlled by a HorizontalPodAutoscaler. In order to enable high availability, it should be greater than 1."
+  #@schema/validation min=1, max=5
+  minReplicas: 1
 
 #@schema/desc "Settings for the OpenTelemetry support."
 opentelemetry:
@@ -185,13 +184,13 @@ feature_flags:
   #@schema/validation one_of=["true", "false"]
   enable_provenance_in_status: "false"
 
-  #@schema/desc "Setting this flag to `full` to enable full embedding of `TaskRun` and `Run` statuses in the `PipelineRun` status. Set it to `minimal` to populate the `ChildReferences` field in the `PipelineRun` status with name, kind, and API version information for each `TaskRun` and `Run` in the `PipelineRun` instead. Set it to `both` to do both."
-  #@schema/validation one_of=["full", "minimal", "both"]
-  embedded_status: "minimal"
-
   #@schema/desc "Setting this flag will determine the version for custom tasks created by PipelineRuns."
   #@schema/validation one_of=["v1alpha1", "v1beta1"]
   custom_task_version: "v1beta1"
+
+  #@schema/desc "Setting this flag will determine how Tekton Pipelines will handle non-falsifiable provenance. If set to `spire`, then SPIRE will be used to ensure non-falsifiable provenance. If set to `none`, then Tekton will not have non-falsifiable provenance. This is an experimental feature and thus should still be considered an alpha feature."
+  #@schema/validation one_of=["spire", "none"]
+  enforce_nonfalsifiablity: "none"
 
 #@schema/desc "Configuration for the Tekton Resolvers, responsible for resolving requests for Tasks and Pipelines from remote locations."
 resolvers:

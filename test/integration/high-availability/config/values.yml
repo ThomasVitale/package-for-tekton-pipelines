@@ -19,5 +19,4 @@ stringData:
       buckets: "3"
 
     webhook:
-      pdb:
-        enable: true
+      minReplicas: 2
