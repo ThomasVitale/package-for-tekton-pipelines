@@ -35,6 +35,7 @@ rebaseRules:
   resourceMatchers:
   - kindNamespaceNameMatcher: {kind: ConfigMap, namespace: tekton-pipelines, name: config-artifact-bucket}
   - kindNamespaceNameMatcher: {kind: ConfigMap, namespace: tekton-pipelines, name: config-artifact-pvc}
+  - kindNamespaceNameMatcher: {kind: ConfigMap, namespace: tekton-pipelines, name: config-spire}
   - kindNamespaceNameMatcher: {kind: ConfigMap, namespace: tekton-pipelines, name: config-trusted-resources}
 
 #! This webhook configuration is populated by Tekton Pipelines.

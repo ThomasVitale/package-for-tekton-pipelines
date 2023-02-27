@@ -16,13 +16,12 @@ spec:
   #@overlay/match missing_ok=True
   replicas: #@ data.values.controllers.resolvers.replicas
 
-#@ if data.values.webhook.pdb.enable:
-
 #@overlay/match by=overlay.subset({"kind":"HorizontalPodAutoscaler", "metadata":{"name":"tekton-pipelines-webhook", "namespace": "tekton-pipelines"}}), expects=1
 ---
 spec:
-  minReplicas: 2
+  minReplicas: #@ data.values.webhook.minReplicas
 
+#@ if data.values.webhook.minReplicas >= 2:
 ---
 apiVersion: policy/v1
 kind: PodDisruptionBudget
@@ -42,5 +41,4 @@ spec:
       app.kubernetes.io/component: webhook
       app.kubernetes.io/instance: default
       app.kubernetes.io/part-of: tekton-pipelines
-
 #@ end

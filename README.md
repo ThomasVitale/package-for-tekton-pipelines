@@ -104,7 +104,7 @@ The Tekton Pipelines package has the following configurable properties.
 | `policies.include` | `false` | Whether to include the out-of-the-box Kyverno policies to validate and secure the package installation. |
 | `controllers.pipelines.replicas` | `1` | The number of replicas for the `tekton-pipelines-controller` Deployment. In order to enable high availability, it should be greater than 1. |
 | `controllers.resolvers.replicas` | `1` | The number of replicas for the `tekton-pipelines-remote-resolvers` Deployment. In order to enable high availability, it should be greater than 1. |
-| `webhook.pdb.enable` | `false` | Setting this flag to `true` enables a PodDisruptionBudget for the `tekton-pipelines-webhook` Deployment and ensures high availability. |
+| `webhook.minReplicas` | `1` | The minimum number of replicas as controlled by a HorizontalPodAutoscaler. In order to enable high availability, it should be greater than 1. |
 | `opentelemetry.enable` | `false` | Setting this flag to `true` enables the OpenTelemetry instrumentation and exporter. |
 | `opentelemetry.exporter.jaeger.endpoint` | `""` | The endpoint where the distributed tracing backend accepts OpenTelemetry traces using the Jaeger protocol. |
 | `opentelemetry.exporter.jaeger.endpoint` | `""` | The username to access the distributed tracing backend. Optional. |
@@ -167,8 +167,8 @@ Feature flags configuration stored in the `feature-flags` ConfigMap.
 | `feature_flags.send_cloudevents_for_runs` | `false` | Setting this flag to `true` enables CloudEvents for CustomRuns and Runs, as long as a CloudEvents sink is configured in the `config-defaults` ConfigMap. |
 | `feature_flags.resource_verification_mode` | `skip` | Setting this flag to `enforce` will enforce verification of tasks/pipelines. Failing to verify will fail the TaskRun/PipelineRun. `warn` will only log the err message and `skip` will skip the whole verification. |
 | `feature_flags.enable_provenance_in_status` | `false` | Setting this flag to `true` enables populating the `provenance` field in TaskRun and PipelineRun status. This field contains metadata about resources used in the TaskRun/PipelineRun such as the source from where a remote Task/Pipeline definition was fetched. |
-| `feature_flags.embedded_status` | `minimal` | Setting this flag to `full` to enable full embedding of `TaskRun` and `Run` statuses in the `PipelineRun` status. Set it to `minimal` to populate the `ChildReferences` field in the `PipelineRun` status with name, kind, and API version information for each `TaskRun` and `Run` in the `PipelineRun` instead. Set it to `both` to do both. |
 | `feature_flags.custom_task_version` | `v1beta1` | Setting this flag will determine the version for custom tasks created by PipelineRuns. Supported values: `v1alpha1`, `v1beta1`. |
+| `feature_flags.enforce_nonfalsifiablity` | `none` | Setting this flag will determine how Tekton Pipelines will handle non-falsifiable provenance. If set to `spire`, then SPIRE will be used to ensure non-falsifiable provenance. If set to `none`, then Tekton will not have non-falsifiable provenance. This is an experimental feature and thus should still be considered an alpha feature. |
 
 Configuration for the bundle resolver stored in the `bundleresolver-config` ConfigMap.
 

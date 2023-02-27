@@ -5,7 +5,7 @@ This package is published as an OCI artifact, signed with Sigstore [Cosign](http
 Using `cosign`, you can display the supply chain security related artifacts for the `ghcr.io/kadras-io/package-for-tekton-pipelines` images. Use the specific digest you'd like to verify.
 
 ```shell
-COSIGN_EXPERIMENTAL=1 cosign tree ghcr.io/kadras-io/package-for-tekton-pipelines
+cosign tree ghcr.io/kadras-io/package-for-tekton-pipelines
 ```
 
 The result:

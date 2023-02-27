@@ -45,11 +45,11 @@ data:
   #@ if/end data.values.feature_flags.enable_provenance_in_status:
   #@overlay/replace
   enable-provenance-in-status: #@ data.values.feature_flags.enable_provenance_in_status
-
-  #@ if/end data.values.feature_flags.embedded_status:
-  #@overlay/replace
-  embedded-status: #@ data.values.feature_flags.embedded_status
   
   #@ if/end data.values.feature_flags.custom_task_version:
   #@overlay/replace
   custom-task-version: #@ data.values.feature_flags.custom_task_version
+
+  #@ if/end data.values.feature_flags.enforce_nonfalsifiablity:
+  #@overlay/replace
+  enforce-nonfalsifiablity: #@ data.values.feature_flags.enforce_nonfalsifiablity

@@ -2,8 +2,8 @@ apiVersion: vendir.k14s.io/v1alpha1
 directories:
 - contents:
   - githubRelease:
-      tag: v0.44.0
-      url: https://api.github.com/repos/tektoncd/pipeline/releases/90085428
+      tag: v0.45.0
+      url: https://api.github.com/repos/tektoncd/pipeline/releases/92856040
     path: .
   path: config/upstream
 kind: LockConfig

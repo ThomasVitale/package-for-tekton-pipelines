@@ -32,12 +32,11 @@ You can disable high availability for the Tekton Pipelines controllers by scalin
 
 High availability for the Tekton Pipelines webhook is controlled by a `HorizontalPodAutoscaler`, and requires [Metrics Server](https://github.com/kadras-io/package-for-metrics-server) to be installed in your Kubernetes cluster.
 
-The following configuration enables the high availability setup (by default, it's disabled) so that the `HorizontalPodAutoscaler` ensures a minimum of 2 replicas and a `PodDisruptionBudget` prevents downtime during node unavailability.
+The following configuration enables the high availability setup so that the `HorizontalPodAutoscaler` ensures a minimum of 2 replicas. When more than 1 replica is configured, a `PodDisruptionBudget` is automatically created to prevent downtime during node unavailability.
 
 ```yaml
 webhook:
-  pdb:
-    enable: true
+  minReplicas: 2
 ```
 
 For more information, check the Tekton Pipelines documentation for [high availability](https://tekton.dev/docs/pipelines/install/#configuring-high-availability).
