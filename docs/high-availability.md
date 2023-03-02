@@ -9,10 +9,10 @@ The Tekton Pipelines controllers support high availability following an active/a
 The leader election configuration is managed via the `leader_election.*` properties (customizing the `config-leader-election` ConfigMap in each namespace used by Tekton Pipelines).
 
 ```yaml
-leader_election:
-  lease_duration: "60s"
-  renew_deadline: "40s"
-  retry_period: "10s"
+config-leader-election:
+  lease-duration: "60s"
+  renew-deadline: "40s"
+  retry-period: "10s"
   buckets: "3"
 ```
 

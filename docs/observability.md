@@ -9,7 +9,7 @@ Log configuration for all Tekton Pipelines components is managed via the `loggin
 This configuration can change the default log level for controllers and webhooks.
 
 ```yaml
-logging:
+config-logging:
   loglevel:
     controller: "info"
     webhook: "info"
@@ -18,8 +18,8 @@ logging:
 The Tekton Pipelines components use the [uber-go/zap](https://github.com/uber-go/zap) logging library which can be customized via the [options](https://github.com/uber-go/zap/blob/master/config.go#L58) documented in the zap project.
 
 ```yaml
-logging:
-  zap_logger_config: |
+config-logging:
+  zap-logger-config: |
     {
         "level": "info",
         "development": false,
@@ -57,25 +57,25 @@ Tekton Pipelines supports Prometheus and Google Stackdriver for collecting metri
 You can switch the implementation of the metrics to Google Stackdriver and configure that further.
 
 ```yaml
-observability:
+config-observability:
   metrics:
-    backend_destination: "stackdriver"
-    stackdriver_project_id: "<project-id>"
-    allow_stackdriver_custom_metrics: "true"
+    backend-destination: "stackdriver"
+    stackdriver-project-id: "<project-id>"
+    allow-stackdriver-custom_metrics: "true"
 ```
 
 Independently from the implementation, you have complete control over the granularity of the metrics.
 
 ```yaml
-observability:
+config-observability:
   metrics:
     taskrun:
       level: "taskrun"
-      duration_type: "histogram"
+      duration-type: "histogram"
 
     pipelinerun:
       level: "pipelinerun"
-      duration_type: "histogram"
+      duration-type: "histogram"
 ```
 
 For more information, check the Tekton Pipelines documentation for [metrics](https://tekton.dev/docs/pipelines/metrics).
