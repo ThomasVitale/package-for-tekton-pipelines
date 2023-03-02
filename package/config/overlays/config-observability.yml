@@ -2,30 +2,6 @@
 #@ load("@ytt:overlay", "overlay")
 
 #@overlay/match by=overlay.subset({"kind":"ConfigMap", "metadata":{"name":"config-observability"}}),expects=2
-#@overlay/match-child-defaults missing_ok=True
 ---
-data:
-
-  #@overlay/remove
-  _example:
-
-  #@ if/end data.values.observability.metrics.backend_destination:
-  metrics.backend-destination: #@ data.values.observability.metrics.backend_destination
-
-  #@ if/end data.values.observability.metrics.stackdriver_project_id:
-  metrics.stackdriver-project-id: #@ data.values.observability.metrics.stackdriver_project_id
-
-  #@ if/end data.values.observability.metrics.allow_stackdriver_custom_metrics:
-  metrics.allow-stackdriver-custom-metrics: #@ data.values.observability.metrics.allow_stackdriver_custom_metrics
-
-  #@ if/end data.values.observability.metrics.taskrun.level:
-  metrics.taskrun.level: #@ data.values.observability.metrics.taskrun.level
-
-  #@ if/end data.values.observability.metrics.taskrun.duration_type:
-  metrics.taskrun.duration-type: #@ data.values.observability.metrics.taskrun.duration_type
-
-  #@ if/end data.values.observability.metrics.pipelinerun.level:
-  metrics.pipelinerun.level: #@ data.values.observability.metrics.pipelinerun.level
-
-  #@ if/end data.values.observability.metrics.pipelinerun.duration_type:
-  metrics.pipelinerun.duration-type: #@ data.values.observability.metrics.pipelinerun.duration_type
+#@overlay/replace
+data: #@ data.values["config-observability"]

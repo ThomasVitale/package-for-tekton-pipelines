@@ -21,11 +21,17 @@ The result:
 You can verify the signature and its claims:
 
 ```shell
-COSIGN_EXPERIMENTAL=1 cosign verify ghcr.io/kadras-io/package-for-tekton-pipelines | jq
+cosign verify \
+   --certificate-identity-regexp https://github.com/kadras-io \
+   --certificate-oidc-issuer https://token.actions.githubusercontent.com \
+   ghcr.io/kadras-io/package-for-tekton-pipelines | jq
 ```
 
 You can also verify the SLSA Provenance attestation associated with the image.
 
 ```shell
-COSIGN_EXPERIMENTAL=1 cosign verify-attestation --type slsaprovenance ghcr.io/kadras-io/package-for-tekton-pipelines | jq .payload -r | base64 --decode | jq
+cosign verify-attestation --type slsaprovenance \
+   --certificate-identity-regexp https://github.com/slsa-framework \
+   --certificate-oidc-issuer https://token.actions.githubusercontent.com \
+   ghcr.io/kadras-io/package-for-tekton-pipelines | jq .payload -r | base64 --decode | jq
 ```

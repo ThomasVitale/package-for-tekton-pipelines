@@ -2,22 +2,6 @@
 #@ load("@ytt:overlay", "overlay")
 
 #@overlay/match by=overlay.subset({"kind":"ConfigMap", "metadata":{"name":"cluster-resolver-config", "namespace":"tekton-pipelines-resolvers"}}),expects=1
-#@overlay/match-child-defaults missing_ok=True
 ---
-data:
-
-  #@ if/end data.values.resolvers.cluster.default_kind:
-  #@overlay/replace
-  default-kind: #@ data.values.resolvers.cluster.default_kind
-
-  #@ if/end data.values.resolvers.cluster.default_namespace:
-  #@overlay/replace
-  default-namespace: #@ data.values.resolvers.cluster.default_namespace
-
-  #@ if/end data.values.resolvers.cluster.allowed_namespaces:
-  #@overlay/replace
-  allowed-namespaces: #@ data.values.resolvers.cluster.allowed_namespaces
-
-  #@ if/end data.values.resolvers.cluster.blocked_namespaces:
-  #@overlay/replace
-  blocked-namespaces: #@ data.values.resolvers.cluster.blocked_namespaces
+#@overlay/replace
+data: #@ data.values.resolvers["cluster-resolver-config"]
