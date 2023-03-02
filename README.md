@@ -114,110 +114,110 @@ Default configuration stored in the `config-defaults` ConfigMap.
 
 | Config | Default | Description |
 |-------|-------------------|-------------|
-| `defaults.timeout_minutes` | `60` | Number of minutes to use for TaskRun and PipelineRun, if none is specified. |
-| `defaults.service_account` | `default` | Service account name to use for TaskRun and PipelineRun, if none is specified. |
-| `defaults.managed_by_label_value` | `tekton-pipelines` | Value given to the `app.kubernetes.io/managed-by` label applied to all Pods created for TaskRuns. |
-| `defaults.pod_template` | `""` | Pod template to use for TaskRun and PipelineRun. |
-| `defaults.affinity_assistant_pod_template` | `""` | Pod template to use for affinity assistant Pods. |
-| `defaults.cloud_events_sink` | `"` | CloudEvents sink to be used for TaskRun, PipelineRun, CustomRun, and Run lifeycle events. If no sink is specified, no CloudEvent is generated. |
-| `defaults.task_run_workspace_binding` | `emptyDir: {}` | Workspace configuration provided for any Workspaces that a Task declares but that a TaskRun does not explicitly provide. |
-| `defaults.max_matrix_combinations_count` | `256` | Maximum number of combinations from a Matrix, if none is specified. |
-| `defaults.forbidden_env` | `""` | Comma seperated environment variables that cannot be overridden by PodTemplate. |
+| `config-defaults.default-timeout-minutes` | `60` | Number of minutes to use for TaskRun and PipelineRun, if none is specified. |
+| `config-defaults.default-service-account` | `default` | Service account name to use for TaskRun and PipelineRun, if none is specified. |
+| `config-defaults.default-managed-by-label-value` | `tekton-pipelines` | Value given to the `app.kubernetes.io/managed-by` label applied to all Pods created for TaskRuns. |
+| `config-defaults.default-pod-template` | `""` | Pod template to use for TaskRun and PipelineRun. |
+| `config-defaults.default-affinity-assistant-pod-template` | `""` | Pod template to use for affinity assistant Pods. |
+| `config-defaults.default-cloud-events-sink` | `"` | CloudEvents sink to be used for TaskRun, PipelineRun, CustomRun, and Run lifeycle events. If no sink is specified, no CloudEvent is generated. |
+| `config-defaults.default-task-run-workspace-binding` | `emptyDir: {}` | Workspace configuration provided for any Workspaces that a Task declares but that a TaskRun does not explicitly provide. |
+| `config-defaults.default-max-matrix-combinations-count` | `256` | Maximum number of combinations from a Matrix, if none is specified. |
+| `config-defaults.default-forbidden-env` | `""` | Comma seperated environment variables that cannot be overridden by PodTemplate. |
 
 Leader election configuration stored in the `config-leader-election` ConfigMaps.
 
 | Config | Default | Description |
 |-------|-------------------|-------------|
-| `leader_election.lease_duration` | `60s` | How long non-leaders will wait to try to acquire the lock; 15 seconds is the value used by core Kubernetes controllers. |
-| `leader_election.renew_deadline` | `40s` | How long a leader will try to renew the lease before giving up; 10 seconds is the value used by core Kubernetes controllers. |
-| `leader_election.retry_period` | `10s` | How long the leader election client waits between tries of actions; 2 seconds is the value used by core Kubernetes controllers. |
-| `leader_election.buckets` | `1` | Yhe number of buckets used to partition key space of each Reconciler. If this number is M and the replica number of the controller is N, the N replicas will compete for the M buckets. The owner of a bucket will take care of the reconciling for the keys partitioned into that bucket. The maximum value of at this time is 10. |
+| `config-leader-election.lease-duration` | `60s` | How long non-leaders will wait to try to acquire the lock; 15 seconds is the value used by core Kubernetes controllers. |
+| `config-leader-election.renew-deadline` | `40s` | How long a leader will try to renew the lease before giving up; 10 seconds is the value used by core Kubernetes controllers. |
+| `config-leader-election.retry-period` | `10s` | How long the leader election client waits between tries of actions; 2 seconds is the value used by core Kubernetes controllers. |
+| `config-leader-election.buckets` | `1` | Yhe number of buckets used to partition key space of each Reconciler. If this number is M and the replica number of the controller is N, the N replicas will compete for the M buckets. The owner of a bucket will take care of the reconciling for the keys partitioned into that bucket. The maximum value of at this time is 10. |
 
 Logging configuration stored in the `config-logging` ConfigMaps.
 
 | Config | Default | Description |
 |-------|-------------------|-------------|
-| `logging.zap_logger_config` | `""` | Configuration for the zap logger used by all Tekton containers. |
-| `logging.loglevel.controller` | `info` | Log level for the `tekton-pipelines-controller` and `tekton-pipelines-resolvers` Deployments. |
-| `logging.loglevel.webhook` | `info` | Log level for the `tekton-pipelines-webhook` Deployment. |
+| `config-logging.zap-logger-config` | `""` | Configuration for the zap logger used by all Tekton containers. |
+| `config-logging.loglevel.controller` | `info` | Log level for the `tekton-pipelines-controller` and `tekton-pipelines-resolvers` Deployments. |
+| `config-logging.loglevel.webhook` | `info` | Log level for the `tekton-pipelines-webhook` Deployment. |
 
 Observability configuration stored in the `config-observability` ConfigMaps.
 
 | Config | Default | Description |
 |-------|-------------------|-------------|
-| `observability.metrics.backend_destination` | `prometheus` | The system metrics destination. Supported values: `prometheus`, `stackdriver`. |
-| `observability.metrics.stackdriver_project_id` | `""` | The Stackdriver project ID. When running on GCE, application default credentials will be used and metrics will be sent to the cluster's project if this field is not provided. |
-| `observability.metrics.allow_stackdriver_custom_metrics` | `false` | Whether it is allowed to send metrics to Stackdriver using 'global' resource type and custom metric type. Ignore if `backend_destination` is not `stackdriver`. |
-| `observability.metrics.taskrun.level` | `task` | Level for the TaskRun metrics controlling which labels are included: (taskrun, task, namespace), (task, namespace), (namespace). Supported values: `taskrun`, `task`, `namespace`. |
-| `observability.metrics.taskrun.duration_type` | `histogram` | Duration type for the TaskRun metrics. Histogram value isn’t available when the `taskrun` level is selected. Supported values: `histogram`, `lastvalue`. |
-| `observability.metrics.pipelinerun.level` | `pipeline` | Level for the PipelineRun metrics controlling which labels are included: (pipelinerun, pipeline, namespace), (pipeline, namespace), (namespace). Supported values: `pipelinerun`, `pipeline`, `namespace`. |
-| `observability.metrics.pipelinerun.duration_type` | `histogram` | Duration type for the PipelineRun metrics. Histogram value isn’t available when the `pipelinerun` level is selected. Supported values: `histogram`, `lastvalue`. |
+| `config-observability.metrics.backend-destination` | `prometheus` | The system metrics destination. Supported values: `prometheus`, `stackdriver`. |
+| `config-observability.metrics.stackdriver-project-id` | `""` | The Stackdriver project ID. When running on GCE, application default credentials will be used and metrics will be sent to the cluster's project if this field is not provided. |
+| `config-observability.metrics.allow-stackdriver-custom-metrics` | `false` | Whether it is allowed to send metrics to Stackdriver using 'global' resource type and custom metric type. Ignore if `backend_destination` is not `stackdriver`. |
+| `config-observability.metrics.taskrun.level` | `task` | Level for the TaskRun metrics controlling which labels are included: (taskrun, task, namespace), (task, namespace), (namespace). Supported values: `taskrun`, `task`, `namespace`. |
+| `config-observability.metrics.taskrun.duration-type` | `histogram` | Duration type for the TaskRun metrics. Histogram value isn’t available when the `taskrun` level is selected. Supported values: `histogram`, `lastvalue`. |
+| `config-observability.metrics.pipelinerun.level` | `pipeline` | Level for the PipelineRun metrics controlling which labels are included: (pipelinerun, pipeline, namespace), (pipeline, namespace), (namespace). Supported values: `pipelinerun`, `pipeline`, `namespace`. |
+| `config-observability.metrics.pipelinerun.duration-type` | `histogram` | Duration type for the PipelineRun metrics. Histogram value isn’t available when the `pipelinerun` level is selected. Supported values: `histogram`, `lastvalue`. |
 
 Feature flags configuration stored in the `feature-flags` ConfigMap.
 
 | Config | Default | Description |
 |-------|-------------------|-------------|
-| `feature_flags.disable_affinity_assistant` | `false` | Setting this flag to `true` will prevent Tekton to create an Affinity Assistant for every TaskRun sharing a PVC workspace. |
-| `feature_flags.disable_creds_init` | `false` | Setting this flag to `true` will prevent Tekton scanning attached service accounts and injecting any credentials it finds into your Steps. |
-| `feature_flags.await_sidecar_readiness` | `true` | Setting this flag to `false` will stop Tekton from waiting for a TaskRun's sidecar containers to be running before starting the first step. This will allow Tasks to be run in environments that don't support the DownwardAPI volume type, but may lead to unintended behaviour if sidecars are used. |
-| `feature_flags.running_in_environment_with_injected_sidecars` | `true` | This option should be set to `false` when Pipelines is running in a cluster that does not use injected sidecars such as Istio. Setting it to false should decrease the time it takes for a TaskRun to start running. For clusters that use injected sidecars, setting this option to false can lead to unexpected behavior. |
-| `feature_flags.require_git_ssh_secret_known_hosts` | `false` | Setting this flag to `true` will require that any Git SSH Secret offered to Tekton must have known_hosts included. |
-| `feature_flags.enable_tekton_oci_bundles` | `false` | Setting this flag to `true` enables the use of Tekton OCI bundle. This is an experimental feature and thus should still be considered an alpha feature. |
-| `feature_flags.enable_api_fields` | `stable` | Setting this flag will determine which gated features are enabled. Support values: `stable`, `beta`, `alpha`. |
-| `feature_flags.send_cloudevents_for_runs` | `false` | Setting this flag to `true` enables CloudEvents for CustomRuns and Runs, as long as a CloudEvents sink is configured in the `config-defaults` ConfigMap. |
-| `feature_flags.resource_verification_mode` | `skip` | Setting this flag to `enforce` will enforce verification of tasks/pipelines. Failing to verify will fail the TaskRun/PipelineRun. `warn` will only log the err message and `skip` will skip the whole verification. |
-| `feature_flags.enable_provenance_in_status` | `false` | Setting this flag to `true` enables populating the `provenance` field in TaskRun and PipelineRun status. This field contains metadata about resources used in the TaskRun/PipelineRun such as the source from where a remote Task/Pipeline definition was fetched. |
-| `feature_flags.custom_task_version` | `v1beta1` | Setting this flag will determine the version for custom tasks created by PipelineRuns. Supported values: `v1alpha1`, `v1beta1`. |
-| `feature_flags.enforce_nonfalsifiablity` | `none` | Setting this flag will determine how Tekton Pipelines will handle non-falsifiable provenance. If set to `spire`, then SPIRE will be used to ensure non-falsifiable provenance. If set to `none`, then Tekton will not have non-falsifiable provenance. This is an experimental feature and thus should still be considered an alpha feature. |
+| `feature-flags.disable-affinity-assistant` | `false` | Setting this flag to `true` will prevent Tekton to create an Affinity Assistant for every TaskRun sharing a PVC workspace. |
+| `feature-flags.disable-creds-init` | `false` | Setting this flag to `true` will prevent Tekton scanning attached service accounts and injecting any credentials it finds into your Steps. |
+| `feature-flags.await-sidecar-readiness` | `true` | Setting this flag to `false` will stop Tekton from waiting for a TaskRun's sidecar containers to be running before starting the first step. This will allow Tasks to be run in environments that don't support the DownwardAPI volume type, but may lead to unintended behaviour if sidecars are used. |
+| `feature-flags.running-in-environment-with-injected-sidecars` | `true` | This option should be set to `false` when Pipelines is running in a cluster that does not use injected sidecars such as Istio. Setting it to false should decrease the time it takes for a TaskRun to start running. For clusters that use injected sidecars, setting this option to false can lead to unexpected behavior. |
+| `feature-flags.require-git-ssh-secret-known-hosts` | `false` | Setting this flag to `true` will require that any Git SSH Secret offered to Tekton must have known_hosts included. |
+| `feature-flags.enable-tekton-oci-bundles` | `false` | Setting this flag to `true` enables the use of Tekton OCI bundle. This is an experimental feature and thus should still be considered an alpha feature. |
+| `feature-flags.enable-api-fields` | `stable` | Setting this flag will determine which gated features are enabled. Support values: `stable`, `beta`, `alpha`. |
+| `feature-flags.send-cloudevents-for-runs` | `false` | Setting this flag to `true` enables CloudEvents for CustomRuns and Runs, as long as a CloudEvents sink is configured in the `config-defaults` ConfigMap. |
+| `feature-flags.resource-verification-mode` | `skip` | Setting this flag to `enforce` will enforce verification of tasks/pipelines. Failing to verify will fail the TaskRun/PipelineRun. `warn` will only log the err message and `skip` will skip the whole verification. |
+| `feature-flags.enable-provenance-in-status` | `false` | Setting this flag to `true` enables populating the `provenance` field in TaskRun and PipelineRun status. This field contains metadata about resources used in the TaskRun/PipelineRun such as the source from where a remote Task/Pipeline definition was fetched. |
+| `feature-flags.custom-task-version` | `v1beta1` | Setting this flag will determine the version for custom tasks created by PipelineRuns. Supported values: `v1alpha1`, `v1beta1`. |
+| `feature-flags.enforce-nonfalsifiablity` | `none` | Setting this flag will determine how Tekton Pipelines will handle non-falsifiable provenance. If set to `spire`, then SPIRE will be used to ensure non-falsifiable provenance. If set to `none`, then Tekton will not have non-falsifiable provenance. This is an experimental feature and thus should still be considered an alpha feature. |
 
 Configuration for the bundle resolver stored in the `bundleresolver-config` ConfigMap.
 
 | Config | Default | Description |
 |-------|-------------------|-------------|
-| `resolvers.bundle.default_service_account` | `default` | The default name of the service account to use when constructing registry credentials. |
-| `resolvers.bundle.default_kind` | `task` | The default resource kind to pull out of the bundle. Supported values: `pipeline`, `task`. |
+| `resolvers.bundleresolver-config.default-service-account` | `default` | The default name of the service account to use when constructing registry credentials. |
+| `resolvers.bundleresolver-config.default-kind` | `task` | The default resource kind to pull out of the bundle. Supported values: `pipeline`, `task`. |
 
 Configuration for the cluster resolver stored in the `cluster-resolver-config` ConfigMap.
 
 | Config | Default | Description |
 |-------|-------------------|-------------|
-| `resolvers.cluster.default_kind` | `task` | The default resource kind to fetch. Supported values: `pipeline`, `task`. |
-| `resolvers.cluster.default_namespace` | `""` | The default namespace to fetch resources from. |
-| `resolvers.cluster.allowed_namespaces` | `""` | A comma-separated list of namespaces which the resolver is allowed to access. Defaults to empty, meaning all namespaces are allowed. |
-| `resolvers.cluster.blocked_namespaces` | `""` | A comma-separated list of namespaces which the resolver is blocked from accessing. Defaults to empty, meaning all namespaces are allowed. |
+| `resolvers.cluster-resolver-config.default-kind` | `task` | The default resource kind to fetch. Supported values: `pipeline`, `task`. |
+| `resolvers.cluster-resolver-config.default-namespace` | `""` | The default namespace to fetch resources from. |
+| `resolvers.cluster-resolver-config.allowed-namespaces` | `""` | A comma-separated list of namespaces which the resolver is allowed to access. Defaults to empty, meaning all namespaces are allowed. |
+| `resolvers.cluster-resolver-config.blocked-namespaces` | `""` | A comma-separated list of namespaces which the resolver is blocked from accessing. Defaults to empty, meaning all namespaces are allowed. |
 
 Configuration for the git resolver stored in the `git-resolver-config` ConfigMap.
 
 | Config | Default | Description |
 |-------|-------------------|-------------|
-| `resolvers.git.fetch_timeout` | `1m` | The maximum amount of time a single anonymous cloning resolution may take. |
-| `resolvers.git.default_url` | `https://github.com/tektoncd/catalog.git` | The git url to fetch the remote resource from when using anonymous cloning. |
-| `resolvers.git.default_revision` | `main` | The git revision to fetch the remote resource from with either anonymous cloning or the authenticated API. |
-| `resolvers.git.scm_type` | `github` | The SCM type to use with the authenticated API. Supported values: `github`, `gitlab`, `gitea`, `bitbucketserver`, `bitbucketcloud`. |
-| `resolvers.git.server_url` | `""` | The SCM server URL to use with the authenticated API. Not needed when using github.com, gitlab.com, or BitBucket Cloud. |
-| `resolvers.git.api_token_secret_name` | `""` | The Kubernetes secret containing the API token for the SCM provider. Required when using the authenticated API. |
-| `resolvers.git.api_token_secret_key` | `""` | The key in the API token secret containing the actual token. Required when using the authenticated API. |
-| `resolvers.git.api_token_secret_namespace` | `default` | The namespace containing the API token secret. |
-| `resolvers.git.default_org` | `""` | The default organization to look for repositories under when using the authenticated API. |
+| `resolvers.git-resolver-config.fetch-timeout` | `1m` | The maximum amount of time a single anonymous cloning resolution may take. |
+| `resolvers.git-resolver-config.default-url` | `https://github.com/tektoncd/catalog.git` | The git url to fetch the remote resource from when using anonymous cloning. |
+| `resolvers.git-resolver-config.default-revision` | `main` | The git revision to fetch the remote resource from with either anonymous cloning or the authenticated API. |
+| `resolvers.git-resolver-config.scm-type` | `github` | The SCM type to use with the authenticated API. Supported values: `github`, `gitlab`, `gitea`, `bitbucketserver`, `bitbucketcloud`. |
+| `resolvers.git-resolver-config.server-url` | `""` | The SCM server URL to use with the authenticated API. Not needed when using github.com, gitlab.com, or BitBucket Cloud. |
+| `resolvers.git-resolver-config.api-token-secret-name` | `""` | The Kubernetes secret containing the API token for the SCM provider. Required when using the authenticated API. |
+| `resolvers.git-resolver-config.api-token-secret-key` | `""` | The key in the API token secret containing the actual token. Required when using the authenticated API. |
+| `resolvers.git-resolver-config.api-token-secret-namespace` | `default` | The namespace containing the API token secret. |
+| `resolvers.git-resolver-config.default-org` | `""` | The default organization to look for repositories under when using the authenticated API. |
 
 Configuration for the hub resolver stored in the `hubresolver-config` ConfigMap.
 
 | Config | Default | Description |
 |-------|-------------------|-------------|
-| `resolvers.hub.default_tekton_hub_catalog` | `Tekton` | The default Tekton Hub catalog from where to pull the resource. |
-| `resolvers.hub.default_artifact_hub_task_catalog` | `tekton-catalog-tasks` | The default Artifact Hub Task catalog from where to pull the resource. |
-| `resolvers.hub.default_artifact_hub_pipeline_catalog` | `tekton-catalog-pipelines` | The default Artifact Hub Pipeline catalog from where to pull the resource. |
-| `resolvers.hub.default_kind` | `task` | The default resource kind to fetch. Supported values: `pipeline`, `task`. |
-| `resolvers.hub.default_type` | `artifact` | The default hub from where to pull the resource. Supported values: `artifact`, `tekton`. |
+| `resolvers.hubresolver-config.default-tekton-hub-catalog` | `Tekton` | The default Tekton Hub catalog from where to pull the resource. |
+| `resolvers.hubresolver-config.default-artifact-hub-task-catalog` | `tekton-catalog-tasks` | The default Artifact Hub Task catalog from where to pull the resource. |
+| `resolvers.hubresolver-config.default-artifact-hub-pipeline-catalog` | `tekton-catalog-pipelines` | The default Artifact Hub Pipeline catalog from where to pull the resource. |
+| `resolvers.hubresolver-config.default-kind` | `task` | The default resource kind to fetch. Supported values: `pipeline`, `task`. |
+| `resolvers.hubresolver-config.default-type` | `artifact` | The default hub from where to pull the resource. Supported values: `artifact`, `tekton`. |
 
 Feature flags configuration stored in the `resolvers-feature-flags` ConfigMap.
 
 | Config | Default | Description |
 |-------|-------------------|-------------|
-| `resolvers.feature_flags.enable_bundles_resolver` | `true` | Setting this flag to `true` enables remote resolution of Tekton OCI bundles. |
-| `resolvers.feature_flags.enable_hub_resolver` | `true` | Setting this flag to `true` enables remote resolution of tasks and pipelines via the Tekton Hub. |
-| `resolvers.feature_flags.enable_git_resolver` | `true` | Setting this flag to `true` enables remote resolution of tasks and pipelines from Git repositories. |
-| `resolvers.feature_flags.enable_cluster_resolver` | `true` | Setting this flag to `true` enables remote resolution of tasks and pipelines from other namespaces within the cluster. |
+| `resolvers.resolvers-feature-flags.enable-bundles-resolver` | `true` | Setting this flag to `true` enables remote resolution of Tekton OCI bundles. |
+| `resolvers.resolvers-feature-flags.enable-hub-resolver` | `true` | Setting this flag to `true` enables remote resolution of tasks and pipelines via the Tekton Hub. |
+| `resolvers.resolvers-feature-flags.enable-git-resolver` | `true` | Setting this flag to `true` enables remote resolution of tasks and pipelines from Git repositories. |
+| `resolvers.resolvers-feature-flags.enable-cluster-resolver` | `true` | Setting this flag to `true` enables remote resolution of tasks and pipelines from other namespaces within the cluster. |
 
 </details>
 

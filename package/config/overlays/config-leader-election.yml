@@ -2,21 +2,6 @@
 #@ load("@ytt:overlay", "overlay")
 
 #@overlay/match by=overlay.subset({"kind":"ConfigMap", "metadata":{"name":"config-leader-election"}}),expects=2
-#@overlay/match-child-defaults missing_ok=True
 ---
-data:
-
-  #@overlay/remove
-  _example:
-
-  #@ if/end data.values.leader_election.lease_duration:
-  lease-duration: #@ data.values.leader_election.lease_duration
-
-  #@ if/end data.values.leader_election.renew_deadline:
-  renew-deadline: #@ data.values.leader_election.renew_deadline
-
-  #@ if/end data.values.leader_election.retry_period:
-  retry-period: #@ data.values.leader_election.retry_period
-
-  #@ if/end data.values.leader_election.buckets:
-  buckets: #@ data.values.leader_election.buckets
+#@overlay/replace
+data: #@ data.values["config-leader-election"]

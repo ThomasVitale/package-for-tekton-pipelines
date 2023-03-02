@@ -2,42 +2,6 @@
 #@ load("@ytt:overlay", "overlay")
 
 #@overlay/match by=overlay.subset({"kind":"ConfigMap", "metadata":{"name":"git-resolver-config", "namespace":"tekton-pipelines-resolvers"}}),expects=1
-#@overlay/match-child-defaults missing_ok=True
 ---
-data:
-
-  #@ if/end data.values.resolvers.git.fetch_timeout:
-  #@overlay/replace
-  fetch-timeout: #@ data.values.resolvers.git.fetch_timeout
-
-  #@ if/end data.values.resolvers.git.default_url:
-  #@overlay/replace
-  default-url: #@ data.values.resolvers.git.default_url
-
-  #@ if/end data.values.resolvers.git.default_revision:
-  #@overlay/replace
-  default-revision: #@ data.values.resolvers.git.default_revision
-
-  #@ if/end data.values.resolvers.git.scm_type:
-  #@overlay/replace
-  scm-type: #@ data.values.resolvers.git.scm_type
-
-  #@ if/end data.values.resolvers.git.server_url:
-  #@overlay/replace
-  server-url: #@ data.values.resolvers.git.server_url
-
-  #@ if/end data.values.resolvers.git.api_token_secret_name:
-  #@overlay/replace
-  api-token-secret-name: #@ data.values.resolvers.git.api_token_secret_name
-
-  #@ if/end data.values.resolvers.git.api_token_secret_key:
-  #@overlay/replace
-  api-token-secret-key: #@ data.values.resolvers.git.api_token_secret_key
-
-  #@ if/end data.values.resolvers.git.api_token_secret_namespace:
-  #@overlay/replace
-  api-token-secret-namespace: #@ data.values.resolvers.git.api_token_secret_namespace
-
-  #@ if/end data.values.resolvers.git.default_org:
-  #@overlay/replace
-  default-org: #@ data.values.resolvers.git.default_org
+#@overlay/replace
+data: #@ data.values.resolvers["git-resolver-config"]
