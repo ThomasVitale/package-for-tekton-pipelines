@@ -4,7 +4,7 @@ Monitor and observe the operation of Tekton Pipelines using logs, metrics, and t
 
 ## Logs
 
-Log configuration for all Tekton Pipelines components is managed via the `logging.*` properties (customizing the `config-logging` ConfigMap in each namespace used by Tekton Pipelines).
+Log configuration for all Tekton Pipelines components is managed via the `config-logging.*` properties (customizing the `config-logging` ConfigMap in each namespace used by Tekton Pipelines).
 
 This configuration can change the default log level for controllers and webhooks.
 
@@ -50,7 +50,7 @@ For more information, check the Tekton Pipelines documentation for [logs](https:
 
 ## Metrics
 
-Metrics configuration for all Tekton Pipelines components is managed via the `observability.metrics.*` properties (customizing the `config-observability` ConfigMap in each namespace used by Tekton Pipelines).
+Metrics configuration for all Tekton Pipelines components is managed via the `config-observability.metrics.*` properties (customizing the `config-observability` ConfigMap in each namespace used by Tekton Pipelines).
 
 Tekton Pipelines supports Prometheus and Google Stackdriver for collecting metrics. Prometheus is the default format. This package comes pre-configured with the necessary annotations to let Prometheus scrape metrics automatically from all Tekton Pipelines components.
 

@@ -1,7 +1,7 @@
 #@data/values-schema
 ---
 
-#@schema/desc "Self-signed certificate for the private container registry storing the images used in Tekton Tasks (PEM-encoded format)."
+#@schema/desc "PEM-encoded certificate data to trust TLS connections with a custom CA."
 ca_cert_data: ""
 
 #@schema/desc "Settings for the Kyverno policies."

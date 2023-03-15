@@ -1,7 +1,7 @@
 #@ load("@ytt:data", "data")
 #@ load("@ytt:overlay", "overlay")
 
-#@overlay/match by=overlay.subset({"kind":"ConfigMap", "metadata":{"name":"feature-flags", "namespace": "tekton-pipelines"}}),expects=1
+#@overlay/match by=overlay.subset({"kind":"ConfigMap", "metadata":{"name":"feature-flags", "namespace":"tekton-pipelines"}})
 ---
 #@overlay/replace
 data: #@ data.values["feature-flags"]

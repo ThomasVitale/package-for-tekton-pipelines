@@ -100,7 +100,7 @@ The Tekton Pipelines package has the following configurable properties.
 
 | Config | Default | Description |
 |-------|-------------------|-------------|
-| `ca_cert_data` | `""` | Self-signed certificate for the private container registry storing the images used in Tekton Tasks (PEM-encoded format). |
+| `ca_cert_data` | `""` | PEM-encoded certificate data to trust TLS connections with a custom CA. |
 | `policies.include` | `false` | Whether to include the out-of-the-box Kyverno policies to validate and secure the package installation. |
 | `controllers.pipelines.replicas` | `1` | The number of replicas for the `tekton-pipelines-controller` Deployment. In order to enable high availability, it should be greater than 1. |
 | `controllers.resolvers.replicas` | `1` | The number of replicas for the `tekton-pipelines-remote-resolvers` Deployment. In order to enable high availability, it should be greater than 1. |

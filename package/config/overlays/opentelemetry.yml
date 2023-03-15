@@ -3,7 +3,7 @@
 
 #@ if data.values.opentelemetry.enable:
 
-#@overlay/match by=overlay.subset({"kind":"Deployment", "metadata":{"name":"tekton-pipelines-controller", "namespace": "tekton-pipelines"}}), expects=1
+#@overlay/match by=overlay.subset({"kind":"Deployment", "metadata":{"name":"tekton-pipelines-controller", "namespace":"tekton-pipelines"}})
 ---
 spec:
   template:
