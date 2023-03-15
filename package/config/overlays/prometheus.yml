@@ -4,8 +4,8 @@
 ---
 spec:
   template:
+    #@overlay/match-child-defaults missing_ok=True
     metadata:
-      #@overlay/match missing_ok=True
       annotations:
         prometheus.io/scrape: "true"
         prometheus.io/scheme: "http"

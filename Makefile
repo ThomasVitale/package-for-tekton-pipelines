@@ -1,5 +1,9 @@
 K8S_VERSION=v1.26
 
+# Build package configuration
+build: package
+	cd package && kctrl package init
+
 # Prepare cluster for development workflow
 prepare: test/setup
 	ytt -f test/setup/assets/namespace.yml | kapp deploy -a ns -f- -y
@@ -9,6 +13,10 @@ prepare: test/setup
 # Inner development loop
 dev: package
 	cd package && kctrl dev -f package-resources.yml --local -y
+
+# Clean development environment
+clean:
+	cd package && kctrl dev -f package-resources.yml --local -y --delete 
 
 # Process the configuration manifests with ytt
 ytt:

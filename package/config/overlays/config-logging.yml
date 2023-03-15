@@ -1,7 +1,7 @@
 #@ load("@ytt:data", "data")
 #@ load("@ytt:overlay", "overlay")
 
-#@overlay/match by=overlay.subset({"kind":"ConfigMap", "metadata":{"name":"config-logging"}}),expects=2
+#@overlay/match by=overlay.subset({"kind":"ConfigMap", "metadata":{"name":"config-logging"}}), expects=2
 ---
 #@overlay/replace
 data: #@ data.values["config-logging"]

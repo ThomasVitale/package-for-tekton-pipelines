@@ -6,7 +6,7 @@ High availability for Tekton Pipelines can be configured using different strateg
 
 The Tekton Pipelines controllers support high availability following an active/active model based on the leader election strategy. Work is distributed among replicas based on buckets.
 
-The leader election configuration is managed via the `leader_election.*` properties (customizing the `config-leader-election` ConfigMap in each namespace used by Tekton Pipelines).
+The leader election configuration is managed via the `config-leader-election.*` properties (customizing the `config-leader-election` ConfigMap in each namespace used by Tekton Pipelines).
 
 ```yaml
 config-leader-election:
@@ -39,4 +39,4 @@ webhook:
   minReplicas: 2
 ```
 
-For more information, check the Tekton Pipelines documentation for [high availability](https://tekton.dev/docs/pipelines/install/#configuring-high-availability).
+For more information, check the Tekton Pipelines documentation for [high availability](https://tekton.dev/docs/pipelines/enabling-ha).

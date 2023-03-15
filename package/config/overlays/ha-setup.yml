@@ -1,22 +1,19 @@
 #@ load("@ytt:data", "data")
 #@ load("@ytt:overlay", "overlay")
 
-#! Tekton Pipelines can be configured with high availability support.
-#! See: https://tekton.dev/docs/pipelines/enabling-ha
-
-#@overlay/match by=overlay.subset({"kind":"Deployment", "metadata":{"name":"tekton-pipelines-controller", "namespace": "tekton-pipelines"}}), expects=1
+#@overlay/match by=overlay.subset({"kind":"Deployment", "metadata":{"name":"tekton-pipelines-controller", "namespace":"tekton-pipelines"}})
 ---
 spec:
   #@overlay/match missing_ok=True
   replicas: #@ data.values.controllers.pipelines.replicas
 
-#@overlay/match by=overlay.subset({"kind":"Deployment", "metadata":{"name":"tekton-pipelines-remote-resolvers", "namespace": "tekton-pipelines-resolvers"}}), expects=1
+#@overlay/match by=overlay.subset({"kind":"Deployment", "metadata":{"name":"tekton-pipelines-remote-resolvers", "namespace":"tekton-pipelines-resolvers"}})
 ---
 spec:
   #@overlay/match missing_ok=True
   replicas: #@ data.values.controllers.resolvers.replicas
 
-#@overlay/match by=overlay.subset({"kind":"HorizontalPodAutoscaler", "metadata":{"name":"tekton-pipelines-webhook", "namespace": "tekton-pipelines"}}), expects=1
+#@overlay/match by=overlay.subset({"kind":"HorizontalPodAutoscaler", "metadata":{"name":"tekton-pipelines-webhook", "namespace":"tekton-pipelines"}})
 ---
 spec:
   minReplicas: #@ data.values.webhook.minReplicas
