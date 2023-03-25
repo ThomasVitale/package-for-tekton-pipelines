@@ -123,6 +123,7 @@ Default configuration stored in the `config-defaults` ConfigMap.
 | `config-defaults.default-task-run-workspace-binding` | `emptyDir: {}` | Workspace configuration provided for any Workspaces that a Task declares but that a TaskRun does not explicitly provide. |
 | `config-defaults.default-max-matrix-combinations-count` | `256` | Maximum number of combinations from a Matrix, if none is specified. |
 | `config-defaults.default-forbidden-env` | `""` | Comma seperated environment variables that cannot be overridden by PodTemplate. |
+| `config-defaults.default-resolver-type` | `""` | The default resolver type to be used in the cluster. |
 
 Leader election configuration stored in the `config-leader-election` ConfigMaps.
 

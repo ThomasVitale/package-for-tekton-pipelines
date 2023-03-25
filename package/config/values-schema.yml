@@ -64,6 +64,8 @@ config-defaults:
   default-max-matrix-combinations-count: "256"
   #@schema/desc "Comma seperated environment variables that cannot be overridden by PodTemplate."
   default-forbidden-env: ""
+  #@schema/desc "The default resolver type to be used in the cluster."
+  default-resolver-type: ""
 
 #@schema/desc "Leader election configuration stored in the `config-leader-election` ConfigMaps and used in both Tekton Pipelines and Tekton Pipelines Resolvers."
 config-leader-election:
