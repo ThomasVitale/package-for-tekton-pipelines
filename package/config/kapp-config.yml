@@ -33,10 +33,7 @@ rebaseRules:
   type: copy
   sources: [existing, new]
   resourceMatchers:
-  - kindNamespaceNameMatcher: {kind: ConfigMap, namespace: tekton-pipelines, name: config-artifact-bucket}
-  - kindNamespaceNameMatcher: {kind: ConfigMap, namespace: tekton-pipelines, name: config-artifact-pvc}
   - kindNamespaceNameMatcher: {kind: ConfigMap, namespace: tekton-pipelines, name: config-spire}
-  - kindNamespaceNameMatcher: {kind: ConfigMap, namespace: tekton-pipelines, name: config-trusted-resources}
 
 #! This webhook configuration is populated by Tekton Pipelines.
 #! We want to persist those changes between upgrades.
