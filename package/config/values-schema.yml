@@ -156,7 +156,7 @@ feature-flags:
   enable-tekton-oci-bundles: "false"
   #@schema/desc "Setting this flag will determine which gated features are enabled."
   #@schema/validation one_of=["stable", "beta", "alpha"]
-  enable-api-fields: "stable"
+  enable-api-fields: "beta"
   #@schema/desc "Setting this flag to `true` enables CloudEvents for CustomRuns and Runs, as long as a CloudEvents sink is configured in the `config-defaults` ConfigMap."
   #@schema/validation one_of=["true", "false"]
   send-cloudevents-for-runs: "false"
