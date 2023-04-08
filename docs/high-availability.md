@@ -13,7 +13,7 @@ config-leader-election:
   lease-duration: "60s"
   renew-deadline: "40s"
   retry-period: "10s"
-  buckets: "3"
+  buckets: "1"
 ```
 
 By default, only one replica for each controller is deployed, meaning high availability is disabled. To enable high availability, it's recommended to configure at least 3 replicas for each controller.
