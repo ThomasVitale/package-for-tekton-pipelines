@@ -24,4 +24,4 @@ ca_cert_data: |
     -----END CERTIFICATE-----
 ```
 
-For more information, check the Tekton Pipelines documentation for [self-signed certificates](https://tekton.dev/docs/pipelines/install/#configuring-self-signed-cert-for-private-registry).
+For more information, check the Tekton Pipelines documentation for [self-signed certificates](https://tekton.dev/docs/pipelines/additional-configs/#configuring-self-signed-cert-for-private-registry).

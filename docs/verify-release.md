@@ -12,10 +12,10 @@ The result:
 
 ```shell
 📦 Supply Chain Security Related artifacts for an image: ghcr.io/kadras-io/package-for-tekton-pipelines
-└── 💾 Attestations for an image tag: ghcr.io/kadras-io/package-for-tekton-pipelines:sha256-e8df926c1f03f381e54a6a421722c82e9988899dc3b54a234ca84aa5d8f959ac.att
-   └── 🍒 sha256:3d3d05042dedd4ba564bf04757c88151fcaba70cf2b46a18db7d8e63b306525d
-└── 🔐 Signatures for an image tag: ghcr.io/kadras-io/package-for-tekton-pipelines:sha256-e8df926c1f03f381e54a6a421722c82e9988899dc3b54a234ca84aa5d8f959ac.sig
-   └── 🍒 sha256:1e9d9684f180aadaa8006013f6e8858d1d412c168f0257caef359b4c557a9065
+└── 💾 Attestations for an image tag: ghcr.io/kadras-io/package-for-tekton-pipelines:sha256-61345735ba6f6a25f39395e8c1b1a7890a16123b448076b0d95a02eccccc0804.att
+   └── 🍒 sha256:4e160b469483d5a8a1897ed8d9e6ee5964b19563481a8b17f23028832dfd6f39
+└── 🔐 Signatures for an image tag: ghcr.io/kadras-io/package-for-tekton-pipelines:sha256-61345735ba6f6a25f39395e8c1b1a7890a16123b448076b0d95a02eccccc0804.sig
+   └── 🍒 sha256:2e213286f7c7e9f39109913f1211d8e0e3edbc9f78ef23dfd43c213ee0dee079
 ```
 
 You can verify the signature and its claims:

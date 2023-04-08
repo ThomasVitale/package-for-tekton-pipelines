@@ -19,7 +19,7 @@ spec:
             #@ if/end data.values.opentelemetry.exporter.jaeger.username:
             - name: OTEL_EXPORTER_JAEGER_USER
               value: #@ data.values.opentelemetry.exporter.jaeger.username
-            #@ if/end data.values.opentelemetry.exporter.jaeger.password :
+            #@ if/end data.values.opentelemetry.exporter.jaeger.password:
             - name: OTEL_EXPORTER_JAEGER_PASSWORD
               value: #@ data.values.opentelemetry.exporter.jaeger.password  
 
