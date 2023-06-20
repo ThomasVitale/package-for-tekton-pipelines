@@ -20,6 +20,8 @@ By default, only one replica for each controller is deployed, meaning high avail
 
 ```yaml
 controllers:
+  events:
+    replicas: 3
   pipelines:
     replicas: 3
   resolvers:

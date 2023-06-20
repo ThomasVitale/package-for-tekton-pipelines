@@ -12,7 +12,7 @@ A Carvel package for [Tekton Pipelines](https://tekton.dev/docs/pipelines), a cl
 
 ### Prerequisites
 
-* Kubernetes 1.24+
+* Kubernetes 1.25+
 * Carvel [`kctrl`](https://carvel.dev/kapp-controller/docs/latest/install/#installing-kapp-controller-cli-kctrl) CLI.
 * Carvel [kapp-controller](https://carvel.dev/kapp-controller) deployed in your Kubernetes cluster. You can install it with Carvel [`kapp`](https://carvel.dev/kapp/docs/latest/install) (recommended choice) or `kubectl`.
 
@@ -26,10 +26,9 @@ A Carvel package for [Tekton Pipelines](https://tekton.dev/docs/pipelines), a cl
 Add the Kadras [package repository](https://github.com/kadras-io/kadras-packages) to your Kubernetes cluster:
 
   ```shell
-  kubectl create namespace kadras-packages
   kctrl package repository add -r kadras-packages \
     --url ghcr.io/kadras-io/kadras-packages \
-    -n kadras-packages
+    -n kadras-packages --create-namespace
   ```
 
 <details><summary>Installation without package repository</summary>
@@ -166,10 +165,10 @@ Feature flags configuration stored in the `feature-flags` ConfigMap.
 | `feature-flags.enable-tekton-oci-bundles` | `false` | Setting this flag to `true` enables the use of Tekton OCI bundle. This is an experimental feature and thus should still be considered an alpha feature. |
 | `feature-flags.enable-api-fields` | `beta` | Setting this flag will determine which gated features are enabled. Support values: `stable`, `beta`, `alpha`. |
 | `feature-flags.send-cloudevents-for-runs` | `false` | Setting this flag to `true` enables CloudEvents for CustomRuns and Runs, as long as a CloudEvents sink is configured in the `config-defaults` ConfigMap. |
-| `feature-flags.resource-verification-mode` | `skip` | Setting this flag to `enforce` will enforce verification of tasks/pipelines. Failing to verify will fail the TaskRun/PipelineRun. `warn` will only log the err message and `skip` will skip the whole verification. |
-| `feature-flags.enable-provenance-in-status` | `false` | Setting this flag to `true` enables populating the `provenance` field in TaskRun and PipelineRun status. This field contains metadata about resources used in the TaskRun/PipelineRun such as the source from where a remote Task/Pipeline definition was fetched. |
-| `feature-flags.custom-task-version` | `v1beta1` | Setting this flag will determine the version for custom tasks created by PipelineRuns. Supported values: `v1alpha1`, `v1beta1`. |
+| `feature-flags.trusted-resources-verification-no-match-policy` | `ignore` | This flag affects the behavior of taskruns and pipelineruns in cases where no VerificationPolicies match them. If it is set to `fail`, TaskRuns and PipelineRuns will fail verification if no matching policies are found. If it is set to `warn`, TaskRuns and PipelineRuns will run to completion if no matching policies are found, and an error will be logged. If it is set to `ignore`, TaskRuns and PipelineRuns will run to completion if no matching policies are found, and no error will be logged. |
+| `feature-flags.enable-provenance-in-status` | `true` | Setting this flag to `true` enables populating the `provenance` field in TaskRun and PipelineRun status. This field contains metadata about resources used in the TaskRun/PipelineRun such as the source from where a remote Task/Pipeline definition was fetched. |
 | `feature-flags.enforce-nonfalsifiablity` | `none` | Setting this flag will determine how Tekton Pipelines will handle non-falsifiable provenance. If set to `spire`, then SPIRE will be used to ensure non-falsifiable provenance. If set to `none`, then Tekton will not have non-falsifiable provenance. This is an experimental feature and thus should still be considered an alpha feature. |
+| `feature-flags.results-from` | `termination-message` | Setting this flag will determine how Tekton pipelines will handle extracting results from the task. Acceptable values are `termination-message` or `sidecar-logs`. `sidecar-logs` is an experimental feature and thus should still be considered an alpha feature. |
 
 Configuration for the bundle resolver stored in the `bundleresolver-config` ConfigMap.
 

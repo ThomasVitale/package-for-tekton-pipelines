@@ -1,6 +1,14 @@
 # Policies - Kyverno
 ---
 apiVersion: kyverno.io/v1
-kind: ClusterPolicy
+kind: Policy
 metadata:
   name: tekton-pipelines-verify-image
+  namespace: tekton-pipelines
+
+---
+apiVersion: kyverno.io/v1
+kind: Policy
+metadata:
+  name: tekton-pipelines-verify-image
+  namespace: tekton-pipelines-resolvers
