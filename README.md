@@ -169,6 +169,7 @@ Feature flags configuration stored in the `feature-flags` ConfigMap.
 | `feature-flags.enable-provenance-in-status` | `true` | Setting this flag to `true` enables populating the `provenance` field in TaskRun and PipelineRun status. This field contains metadata about resources used in the TaskRun/PipelineRun such as the source from where a remote Task/Pipeline definition was fetched. |
 | `feature-flags.enforce-nonfalsifiablity` | `none` | Setting this flag will determine how Tekton Pipelines will handle non-falsifiable provenance. If set to `spire`, then SPIRE will be used to ensure non-falsifiable provenance. If set to `none`, then Tekton will not have non-falsifiable provenance. This is an experimental feature and thus should still be considered an alpha feature. |
 | `feature-flags.results-from` | `termination-message` | Setting this flag will determine how Tekton pipelines will handle extracting results from the task. Acceptable values are `termination-message` or `sidecar-logs`. `sidecar-logs` is an experimental feature and thus should still be considered an alpha feature. |
+| `feature-flags.set-security-context` | `false` | Setting this flag to `true` will limit privileges for containers injected by Tekton into TaskRuns. This allows TaskRuns to run in namespaces with `restricted` pod security standards. Not all Kubernetes implementations support this option. |
 
 Configuration for the bundle resolver stored in the `bundleresolver-config` ConfigMap.
 
