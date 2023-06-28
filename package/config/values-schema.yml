@@ -177,6 +177,8 @@ feature-flags:
   #@schema/desc "Setting this flag will determine how Tekton pipelines will handle extracting results from the task. Acceptable values are `termination-message` or `sidecar-logs`. `sidecar-logs` is an experimental feature and thus should still be considered an alpha feature."
   #@schema/validation one_of=["termination-message", "sidecar-logs"]
   results-from: "termination-message"
+  #@schema/desc "Setting this flag to `true` will limit privileges for containers injected by Tekton into TaskRuns. This allows TaskRuns to run in namespaces with `restricted` pod security standards. Not all Kubernetes implementations support this option."
+  set-security-context: "false"
 
 #@schema/desc "Configuration for the Tekton Resolvers, responsible for resolving requests for Tasks and Pipelines from remote locations."
 resolvers:
