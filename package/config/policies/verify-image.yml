@@ -1,11 +1,14 @@
 #@ load("@ytt:data", "data")
 
-#@ if data.values.policies.include:
+#@ for namespace in ["tekton-pipelines", "tekton-pipelines-resolvers"]:
+
+#@ if/end data.values.policies.include:
 ---
 apiVersion: kyverno.io/v1
-kind: ClusterPolicy
+kind: Policy
 metadata:
   name: tekton-pipelines-verify-image
+  namespace: #@ namespace
   annotations:
     policies.kyverno.io/title: Verify Image
     policies.kyverno.io/category: Software Supply Chain Security
@@ -37,4 +40,5 @@ spec:
                 MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEnLNw3RYx9xQjXbUEw8vonX3U4+tB
                 kPnJq+zt386SCoG0ewIH5MB8+GjIDGArUULSDfjfM31Eae/71kavAUI0OA==
                 -----END PUBLIC KEY-----
+
 #@ end

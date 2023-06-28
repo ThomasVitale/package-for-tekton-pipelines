@@ -7,6 +7,12 @@ spec:
   #@overlay/match missing_ok=True
   replicas: #@ data.values.controllers.pipelines.replicas
 
+#@overlay/match by=overlay.subset({"kind":"Deployment", "metadata":{"name":"tekton-events-controller", "namespace":"tekton-pipelines"}})
+---
+spec:
+  #@overlay/match missing_ok=True
+  replicas: #@ data.values.controllers.events.replicas
+
 #@overlay/match by=overlay.subset({"kind":"Deployment", "metadata":{"name":"tekton-pipelines-remote-resolvers", "namespace":"tekton-pipelines-resolvers"}})
 ---
 spec:

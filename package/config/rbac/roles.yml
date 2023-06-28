@@ -1,0 +1,44 @@
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: tekton-pipelines-aggregate-app-view
+  labels:
+    platform.kadras.io/aggregate-to-app-view: "true"
+rules:
+  - apiGroups:
+      - tekton.dev
+    resources:
+      - tasks
+      - taskruns
+      - pipelines
+      - pipelineruns
+      - runs
+      - customruns
+    verbs:
+      - get
+      - list
+      - watch
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: tekton-pipelines-aggregate-app-operate
+  labels:
+    platform.kadras.io/aggregate-to-app-operate: "true"
+rules:
+  - apiGroups:
+      - tekton.dev
+    resources:
+      - tasks
+      - pipelines
+    verbs:
+      - get
+      - list
+      - watch
+      - create
+      - patch
+      - update
+      - delete
+      - deletecollection

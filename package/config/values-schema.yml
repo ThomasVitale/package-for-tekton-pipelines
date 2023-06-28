@@ -11,6 +11,11 @@ policies:
 
 #@schema/desc "Settings for the Tekton Pipelines controllers."
 controllers:
+  #@schema/desc "Settings for the `tekton-events-controller` Deployment."
+  events:
+    #@schema/desc "The number of replicas for the `tekton-events-controller` Deployment. In order to enable high availability, it should be greater than 1."
+    #@schema/validation min=1
+    replicas: 1
   #@schema/desc "Settings for the `tekton-pipelines-controller` Deployment."
   pipelines:
     #@schema/desc "The number of replicas for the `tekton-pipelines-controller` Deployment. In order to enable high availability, it should be greater than 1."
@@ -160,18 +165,18 @@ feature-flags:
   #@schema/desc "Setting this flag to `true` enables CloudEvents for CustomRuns and Runs, as long as a CloudEvents sink is configured in the `config-defaults` ConfigMap."
   #@schema/validation one_of=["true", "false"]
   send-cloudevents-for-runs: "false"
-  #@schema/desc "Setting this flag to `enforce` will enforce verification of tasks/pipelines. Failing to verify will fail the TaskRun/PipelineRun. `warn` will only log the err message and `skip` will skip the whole verification."
-  #@schema/validation one_of=["enforce", "skip", "warn"]
-  resource-verification-mode: "skip"
+  #@schema/desc "This flag affects the behavior of taskruns and pipelineruns in cases where no VerificationPolicies match them. If it is set to `fail`, TaskRuns and PipelineRuns will fail verification if no matching policies are found. If it is set to `warn`, TaskRuns and PipelineRuns will run to completion if no matching policies are found, and an error will be logged. If it is set to `ignore`, TaskRuns and PipelineRuns will run to completion if no matching policies are found, and no error will be logged."
+  #@schema/validation one_of=["fail", "warn", "ignore"]
+  trusted-resources-verification-no-match-policy: "ignore"
   #@schema/desc "Setting this flag to `true` enables populating the `provenance` field in TaskRun and PipelineRun status. This field contains metadata about resources used in the TaskRun/PipelineRun such as the source from where a remote Task/Pipeline definition was fetched."
   #@schema/validation one_of=["true", "false"]
-  enable-provenance-in-status: "false"
-  #@schema/desc "Setting this flag will determine the version for custom tasks created by PipelineRuns."
-  #@schema/validation one_of=["v1alpha1", "v1beta1"]
-  custom-task-version: "v1beta1"
+  enable-provenance-in-status: "true"
   #@schema/desc "Setting this flag will determine how Tekton Pipelines will handle non-falsifiable provenance. If set to `spire`, then SPIRE will be used to ensure non-falsifiable provenance. If set to `none`, then Tekton will not have non-falsifiable provenance. This is an experimental feature and thus should still be considered an alpha feature."
   #@schema/validation one_of=["none", "spire"]
   enforce-nonfalsifiablity: "none"
+  #@schema/desc "Setting this flag will determine how Tekton pipelines will handle extracting results from the task. Acceptable values are `termination-message` or `sidecar-logs`. `sidecar-logs` is an experimental feature and thus should still be considered an alpha feature."
+  #@schema/validation one_of=["termination-message", "sidecar-logs"]
+  results-from: "termination-message"
 
 #@schema/desc "Configuration for the Tekton Resolvers, responsible for resolving requests for Tasks and Pipelines from remote locations."
 resolvers:
