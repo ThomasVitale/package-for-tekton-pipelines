@@ -1,7 +1,11 @@
 name: Test
 
 on:
-  - push
+  push:
+    paths-ignore:
+      - 'docs/**'
+      - '*.md'
+      - 'LICENSE'
 
 jobs:
   test-config:
