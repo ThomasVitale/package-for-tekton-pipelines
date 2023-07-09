@@ -103,6 +103,7 @@ The Tekton Pipelines package has the following configurable properties.
 | `policies.include` | `false` | Whether to include the out-of-the-box Kyverno policies to validate and secure the package installation. |
 | `controllers.pipelines.replicas` | `1` | The number of replicas for the `tekton-pipelines-controller` Deployment. In order to enable high availability, it should be greater than 1. |
 | `controllers.resolvers.replicas` | `1` | The number of replicas for the `tekton-pipelines-remote-resolvers` Deployment. In order to enable high availability, it should be greater than 1. |
+| `controllers.resolvers.artifact_hub_url` | `https://artifacthub.io/` | The Artifact Hub API used by the Hub Resolver to resolve remote pipelines and tasks. |
 | `webhook.minReplicas` | `1` | The minimum number of replicas as controlled by a HorizontalPodAutoscaler. In order to enable high availability, it should be greater than 1. |
 | `opentelemetry.enable` | `false` | Setting this flag to `true` enables the OpenTelemetry instrumentation and exporter. |
 | `opentelemetry.exporter.jaeger.endpoint` | `""` | The endpoint where the distributed tracing backend accepts OpenTelemetry traces using the Jaeger protocol. |

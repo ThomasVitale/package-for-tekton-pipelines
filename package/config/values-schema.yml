@@ -26,6 +26,9 @@ controllers:
     #@schema/desc "The number of replicas. In order to enable high availability, it should be greater than 1."
     #@schema/validation min=1
     replicas: 1
+    #@schema/desc "The Artifact Hub API used by the Hub Resolver to resolve remote pipelines and tasks."
+    #@schema/validation min_len=1
+    artifact_hub_url: "https://artifacthub.io/"
 
 #@schema/desc "Settings for the `tekton-pipelines-webhook` Deployment."
 webhook:
