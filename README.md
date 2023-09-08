@@ -119,11 +119,16 @@ Default configuration stored in the `config-defaults` ConfigMap.
 | `config-defaults.default-managed-by-label-value` | `tekton-pipelines` | Value given to the `app.kubernetes.io/managed-by` label applied to all Pods created for TaskRuns. |
 | `config-defaults.default-pod-template` | `""` | Pod template to use for TaskRun and PipelineRun. |
 | `config-defaults.default-affinity-assistant-pod-template` | `""` | Pod template to use for affinity assistant Pods. |
-| `config-defaults.default-cloud-events-sink` | `"` | CloudEvents sink to be used for TaskRun, PipelineRun, CustomRun, and Run lifeycle events. If no sink is specified, no CloudEvent is generated. |
 | `config-defaults.default-task-run-workspace-binding` | `emptyDir: {}` | Workspace configuration provided for any Workspaces that a Task declares but that a TaskRun does not explicitly provide. |
 | `config-defaults.default-max-matrix-combinations-count` | `256` | Maximum number of combinations from a Matrix, if none is specified. |
 | `config-defaults.default-forbidden-env` | `""` | Comma seperated environment variables that cannot be overridden by PodTemplate. |
 | `config-defaults.default-resolver-type` | `""` | The default resolver type to be used in the cluster. |
+
+Events configuration stored in the `config-events` ConfigMap.
+
+| Config | Default | Description |
+|-------|-------------------|-------------|
+| `config-events.sink` | `""` | CloudEvents sink to be used for TaskRun, PipelineRun, and CustomRun. If no sink is specified, no CloudEvent is generated. |
 
 Leader election configuration stored in the `config-leader-election` ConfigMaps.
 
@@ -158,7 +163,7 @@ Feature flags configuration stored in the `feature-flags` ConfigMap.
 
 | Config | Default | Description |
 |-------|-------------------|-------------|
-| `feature-flags.disable-affinity-assistant` | `false` | Setting this flag to `true` will prevent Tekton to create an Affinity Assistant for every TaskRun sharing a PVC workspace. |
+| `feature-flags.coschedule` | `workspaces` | Setting this flag will determine how PipelineRun Pods are scheduled with Affinity Assistant. Options: `workspaces`, `pipelineruns`, `isolate-pipelinerun`, `disabled`. |
 | `feature-flags.disable-creds-init` | `false` | Setting this flag to `true` will prevent Tekton scanning attached service accounts and injecting any credentials it finds into your Steps. |
 | `feature-flags.await-sidecar-readiness` | `true` | Setting this flag to `false` will stop Tekton from waiting for a TaskRun's sidecar containers to be running before starting the first step. This will allow Tasks to be run in environments that don't support the DownwardAPI volume type, but may lead to unintended behaviour if sidecars are used. |
 | `feature-flags.running-in-environment-with-injected-sidecars` | `true` | This option should be set to `false` when Pipelines is running in a cluster that does not use injected sidecars such as Istio. Setting it to false should decrease the time it takes for a TaskRun to start running. For clusters that use injected sidecars, setting this option to false can lead to unexpected behavior. |
@@ -168,7 +173,7 @@ Feature flags configuration stored in the `feature-flags` ConfigMap.
 | `feature-flags.send-cloudevents-for-runs` | `false` | Setting this flag to `true` enables CloudEvents for CustomRuns and Runs, as long as a CloudEvents sink is configured in the `config-defaults` ConfigMap. |
 | `feature-flags.trusted-resources-verification-no-match-policy` | `ignore` | This flag affects the behavior of taskruns and pipelineruns in cases where no VerificationPolicies match them. If it is set to `fail`, TaskRuns and PipelineRuns will fail verification if no matching policies are found. If it is set to `warn`, TaskRuns and PipelineRuns will run to completion if no matching policies are found, and an error will be logged. If it is set to `ignore`, TaskRuns and PipelineRuns will run to completion if no matching policies are found, and no error will be logged. |
 | `feature-flags.enable-provenance-in-status` | `true` | Setting this flag to `true` enables populating the `provenance` field in TaskRun and PipelineRun status. This field contains metadata about resources used in the TaskRun/PipelineRun such as the source from where a remote Task/Pipeline definition was fetched. |
-| `feature-flags.enforce-nonfalsifiablity` | `none` | Setting this flag will determine how Tekton Pipelines will handle non-falsifiable provenance. If set to `spire`, then SPIRE will be used to ensure non-falsifiable provenance. If set to `none`, then Tekton will not have non-falsifiable provenance. This is an experimental feature and thus should still be considered an alpha feature. |
+| `feature-flags.enforce-nonfalsifiability` | `none` | Setting this flag will determine how Tekton Pipelines will handle non-falsifiable provenance. If set to `spire`, then SPIRE will be used to ensure non-falsifiable provenance. If set to `none`, then Tekton will not have non-falsifiable provenance. This is an experimental feature and thus should still be considered an alpha feature. |
 | `feature-flags.results-from` | `termination-message` | Setting this flag will determine how Tekton pipelines will handle extracting results from the task. Acceptable values are `termination-message` or `sidecar-logs`. `sidecar-logs` is an experimental feature and thus should still be considered an alpha feature. |
 | `feature-flags.set-security-context` | `false` | Setting this flag to `true` will limit privileges for containers injected by Tekton into TaskRuns. This allows TaskRuns to run in namespaces with `restricted` pod security standards. Not all Kubernetes implementations support this option. |
 

@@ -63,8 +63,6 @@ config-defaults:
   default-pod-template: ""
   #@schema/desc "Pod template to use for affinity assistant Pods."
   default-affinity-assistant-pod-template: ""
-  #@schema/desc "CloudEvents sink to be used for TaskRun, PipelineRun, CustomRun, and Run lifeycle events. If no sink is specified, no CloudEvent is generated."
-  default-cloud-events-sink: ""
   #@schema/desc "Workspace configuration provided for any Workspaces that a Task declares but that a TaskRun does not explicitly provide."
   default-task-run-workspace-binding: |
     emptyDir: {}
@@ -74,6 +72,11 @@ config-defaults:
   default-forbidden-env: ""
   #@schema/desc "The default resolver type to be used in the cluster."
   default-resolver-type: ""
+
+#@schema/desc "Events configuration stored in the `config-events` ConfigMap."
+config-events:
+  #@schema/desc "CloudEvents sink to be used for TaskRun, PipelineRun, and CustomRun. If no sink is specified, no CloudEvent is generated."
+  sink: ""
 
 #@schema/desc "Leader election configuration stored in the `config-leader-election` ConfigMaps and used in both Tekton Pipelines and Tekton Pipelines Resolvers."
 config-leader-election:
@@ -144,9 +147,9 @@ config-observability:
 
 #@schema/desc "Feature flags configuration stored in the `feature-flags` ConfigMap."
 feature-flags:
-  #@schema/desc "Setting this flag to `true` will prevent Tekton to create an Affinity Assistant for every TaskRun sharing a PVC workspace."
-  #@schema/validation one_of=["true", "false"]
-  disable-affinity-assistant: "false"
+  #@schema/desc "Setting this flag will determine how PipelineRun Pods are scheduled with Affinity Assistant. Options: `workspaces`, `pipelineruns`, `isolate-pipelinerun`, `disabled`."
+  #@schema/validation one_of=["workspaces", "pipelineruns", "isolate-pipelinerun", "disabled"]
+  coschedule: "workspaces"
   #@schema/desc "Setting this flag to `true` will prevent Tekton scanning attached service accounts and injecting any credentials it finds into your Steps."
   #@schema/validation one_of=["true", "false"]
   disable-creds-init: "false"
@@ -176,7 +179,7 @@ feature-flags:
   enable-provenance-in-status: "true"
   #@schema/desc "Setting this flag will determine how Tekton Pipelines will handle non-falsifiable provenance. If set to `spire`, then SPIRE will be used to ensure non-falsifiable provenance. If set to `none`, then Tekton will not have non-falsifiable provenance. This is an experimental feature and thus should still be considered an alpha feature."
   #@schema/validation one_of=["none", "spire"]
-  enforce-nonfalsifiablity: "none"
+  enforce-nonfalsifiability: "none"
   #@schema/desc "Setting this flag will determine how Tekton pipelines will handle extracting results from the task. Acceptable values are `termination-message` or `sidecar-logs`. `sidecar-logs` is an experimental feature and thus should still be considered an alpha feature."
   #@schema/validation one_of=["termination-message", "sidecar-logs"]
   results-from: "termination-message"
