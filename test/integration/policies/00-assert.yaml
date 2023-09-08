@@ -1,8 +1,14 @@
+# Policies - Kyverno
 ---
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: kyverno.io/v1
+kind: Policy
 metadata:
-  name: kyverno-admission-controller
-  namespace: kyverno
-status:
-  readyReplicas: 1
+  name: tekton-pipelines-verify-image
+  namespace: tekton-pipelines
+
+---
+apiVersion: kyverno.io/v1
+kind: Policy
+metadata:
+  name: tekton-pipelines-verify-image
+  namespace: tekton-pipelines-resolvers
