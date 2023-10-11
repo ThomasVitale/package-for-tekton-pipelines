@@ -105,10 +105,8 @@ The Tekton Pipelines package has the following configurable properties.
 | `controllers.resolvers.replicas` | `1` | The number of replicas for the `tekton-pipelines-remote-resolvers` Deployment. In order to enable high availability, it should be greater than 1. |
 | `controllers.resolvers.artifact_hub_url` | `https://artifacthub.io/` | The Artifact Hub API used by the Hub Resolver to resolve remote pipelines and tasks. |
 | `webhook.minReplicas` | `1` | The minimum number of replicas as controlled by a HorizontalPodAutoscaler. In order to enable high availability, it should be greater than 1. |
-| `opentelemetry.enable` | `false` | Setting this flag to `true` enables the OpenTelemetry instrumentation and exporter. |
-| `opentelemetry.exporter.jaeger.endpoint` | `""` | The endpoint where the distributed tracing backend accepts OpenTelemetry traces using the Jaeger protocol. |
-| `opentelemetry.exporter.jaeger.endpoint` | `""` | The username to access the distributed tracing backend. Optional. |
-| `opentelemetry.exporter.jaeger.endpoint` | `""` | The password/token to authenticate with the distributed tracing backend. Optional. |
+| `opentelemetry.exporter.jaeger.username` | `""` | The username to access the distributed tracing backend. Optional. |
+| `opentelemetry.exporter.jaeger.password` | `""` | The password/token to authenticate with the distributed tracing backend. Optional. |
 
 Default configuration stored in the `config-defaults` ConfigMap.
 
@@ -159,6 +157,13 @@ Observability configuration stored in the `config-observability` ConfigMaps.
 | `config-observability.metrics.pipelinerun.level` | `pipeline` | Level for the PipelineRun metrics controlling which labels are included: (pipelinerun, pipeline, namespace), (pipeline, namespace), (namespace). Supported values: `pipelinerun`, `pipeline`, `namespace`. |
 | `config-observability.metrics.pipelinerun.duration-type` | `histogram` | Duration type for the PipelineRun metrics. Histogram value isn’t available when the `pipelinerun` level is selected. Supported values: `histogram`, `lastvalue`. |
 
+Tracing configuration stored in the `config-tracing` ConfigMaps.
+
+| Config | Default | Description |
+|-------|-------------------|-------------|
+| `config-tracing.enabled` | `false` | Enable sending traces to defined endpoint by setting this to `true`. |
+| `config-tracing.endpoint` | `""` | The endpoint where the distributed tracing backend accepts OpenTelemetry traces using the Jaeger protocol. |
+
 Feature flags configuration stored in the `feature-flags` ConfigMap.
 
 | Config | Default | Description |
@@ -175,6 +180,7 @@ Feature flags configuration stored in the `feature-flags` ConfigMap.
 | `feature-flags.enable-provenance-in-status` | `true` | Setting this flag to `true` enables populating the `provenance` field in TaskRun and PipelineRun status. This field contains metadata about resources used in the TaskRun/PipelineRun such as the source from where a remote Task/Pipeline definition was fetched. |
 | `feature-flags.enforce-nonfalsifiability` | `none` | Setting this flag will determine how Tekton Pipelines will handle non-falsifiable provenance. If set to `spire`, then SPIRE will be used to ensure non-falsifiable provenance. If set to `none`, then Tekton will not have non-falsifiable provenance. This is an experimental feature and thus should still be considered an alpha feature. |
 | `feature-flags.results-from` | `termination-message` | Setting this flag will determine how Tekton pipelines will handle extracting results from the task. Acceptable values are `termination-message` or `sidecar-logs`. `sidecar-logs` is an experimental feature and thus should still be considered an alpha feature. |
+| `feature-flags.max-result-size` | `4096` | Setting this flag will determine the upper limit of each task result. This flag is optional and only associated with the previous flag, `results-from`. When `results-from` is set to `sidecar-logs`, this flag can be used to configure the upper limit of a task result. |
 | `feature-flags.set-security-context` | `false` | Setting this flag to `true` will limit privileges for containers injected by Tekton into TaskRuns. This allows TaskRuns to run in namespaces with `restricted` pod security standards. Not all Kubernetes implementations support this option. |
 
 Configuration for the bundle resolver stored in the `bundleresolver-config` ConfigMap.

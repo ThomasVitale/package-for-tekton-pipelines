@@ -36,21 +36,6 @@ webhook:
   #@schema/validation min=1, max=5
   minReplicas: 1
 
-#@schema/desc "Settings for the OpenTelemetry support."
-opentelemetry:
-  #@schema/desc "Setting this flag to `true` enables the trace exporter."
-  enable: false
-  #@schema/desc "Settings for the OpenTelemetry exporter"
-  exporter:
-    #@schema/desc "Configuration for the OpenTelemetry exporter based on the Jaeger protocol."
-    jaeger:
-      #@schema/desc "The endpoint where the distributed tracing backend accepts OpenTelemetry traces using the Jaeger protocol."
-      endpoint: ""
-      #@schema/desc "The username to access the distributed tracing backend."
-      username: ""
-      #@schema/desc "The password/token to authenticate with the distributed tracing backend."
-      password: ""
-
 #@schema/desc "Default configuration stored in the `config-defaults` ConfigMap."
 config-defaults:
   #@schema/desc "Number of minutes to use for TaskRun and PipelineRun, if none is specified."
@@ -145,6 +130,25 @@ config-observability:
   #@schema/validation one_of=["histogram", "lastvalue"]
   metrics.pipelinerun.duration-type: "histogram"
 
+#@schema/desc "Tracing configuration stored in the `config-tracing` ConfigMap."
+config-tracing:
+  #@schema/desc "Enable sending traces to defined endpoint by setting this to `true`."
+  enabled: "false"
+  #@schema/desc "The endpoint where the distributed tracing backend accepts OpenTelemetry traces using the Jaeger protocol."
+  #@schema/examples ("Grafana Tempo tracing backend", "http://tempo.observability.svc.cluster.local:14268/api/traces")
+  endpoint: ""
+
+#@schema/desc "Settings for the OpenTelemetry support."
+opentelemetry:
+  #@schema/desc "Settings for the OpenTelemetry exporter"
+  exporter:
+    #@schema/desc "Configuration for the OpenTelemetry exporter based on the Jaeger protocol."
+    jaeger:
+      #@schema/desc "The username to access the distributed tracing backend."
+      username: ""
+      #@schema/desc "The password/token to authenticate with the distributed tracing backend."
+      password: ""
+
 #@schema/desc "Feature flags configuration stored in the `feature-flags` ConfigMap."
 feature-flags:
   #@schema/desc "Setting this flag will determine how PipelineRun Pods are scheduled with Affinity Assistant. Options: `workspaces`, `pipelineruns`, `isolate-pipelinerun`, `disabled`."
@@ -183,6 +187,8 @@ feature-flags:
   #@schema/desc "Setting this flag will determine how Tekton pipelines will handle extracting results from the task. Acceptable values are `termination-message` or `sidecar-logs`. `sidecar-logs` is an experimental feature and thus should still be considered an alpha feature."
   #@schema/validation one_of=["termination-message", "sidecar-logs"]
   results-from: "termination-message"
+  #@schema/desc "Setting this flag will determine the upper limit of each task result. This flag is optional and only associated with the previous flag, `results-from`. When `results-from` is set to `sidecar-logs`, this flag can be used to configure the upper limit of a task result."
+  max-result-size: "4096"
   #@schema/desc "Setting this flag to `true` will limit privileges for containers injected by Tekton into TaskRuns. This allows TaskRuns to run in namespaces with `restricted` pod security standards. Not all Kubernetes implementations support this option."
   set-security-context: "false"
 
