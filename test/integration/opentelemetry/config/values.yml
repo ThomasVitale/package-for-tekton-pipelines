@@ -6,10 +6,10 @@ metadata:
   namespace: tests
 stringData:
   values.yaml: |
+    config-tracing:
+      enabled: "true"
     opentelemetry:
-      enable: true
       exporter:
         jaeger:
-          endpoint: "http://tempo.observability-stack:14268/api/traces"
           username: jon
           password: snow

@@ -34,8 +34,6 @@ spec:
               value: /etc/ssl/certs
             - name: METRICS_DOMAIN
               value: tekton.dev/pipeline
-            - name: OTEL_EXPORTER_JAEGER_ENDPOINT
-              value: http://tempo.observability-stack:14268/api/traces
             - name: OTEL_EXPORTER_JAEGER_USER
               value: jon
             - name: OTEL_EXPORTER_JAEGER_PASSWORD
