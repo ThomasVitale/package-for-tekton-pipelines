@@ -82,16 +82,17 @@ For more information, check the Tekton Pipelines documentation for [metrics](htt
 
 ## Traces
 
-OpenTelemetry instrumentation is provided for all Tekton Pipelines controllers. By default, the instrumentation is disabled. Via the `opentelemetry.*` properties, you can enable the generation of traces and configure how they are exported to a distributed tracing backend.
+OpenTelemetry instrumentation is provided for all Tekton Pipelines controllers. By default, the instrumentation is disabled. You can enable the generation of traces and configure how they are exported to a distributed tracing backend.
 
 Tekton Pipelines supports exporting traces to Jaeger via Thrift/HTTP. Username and password are optional settings.
 
 ```yaml
+config-tracing:
+  enabled: "true"
+  endpoint: "http://tempo.observability.svc.cluster.local:14268/api/traces"
 opentelemetry:
-  enable: true
   exporter:
     jaeger:
-      endpoint: "http://tempo.observability:14268/api/traces"
       username: "jon"
       password: "snow"
 ```

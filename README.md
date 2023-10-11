@@ -74,11 +74,9 @@ For documentation specific to Tekton Pipelines, check out [tekton.dev](https://t
 The Tekton Pipelines package can be customized via a `values.yml` file.
 
   ```yaml
-  opentelemetry:
-    enable: true
-    exporter:
-      jaeger:
-        endpoint: http://tempo.observability:14268/api/traces
+  controllers:
+    pipelines:
+      replicas: 3
   ```
 
 Reference the `values.yml` file from the `kctrl` command when installing or upgrading the package.
