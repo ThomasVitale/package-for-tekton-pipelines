@@ -29,6 +29,9 @@ controllers:
     #@schema/desc "The Artifact Hub API used by the Hub Resolver to resolve remote pipelines and tasks."
     #@schema/validation min_len=1
     artifact_hub_url: "https://artifacthub.io/"
+    #@schema/desc "The Tekton Hub API used by the Hub Resolver to resolve remote pipelines and tasks."
+    #@schema/validation min_len=1
+    tekton_hub_url: "https://api.hub.tekton.dev/"
 
 #@schema/desc "Settings for the `tekton-pipelines-webhook` Deployment."
 webhook:
@@ -63,8 +66,41 @@ config-events:
   #@schema/desc "CloudEvents sink to be used for TaskRun, PipelineRun, and CustomRun. If no sink is specified, no CloudEvent is generated."
   sink: ""
 
-#@schema/desc "Leader election configuration stored in the `config-leader-election` ConfigMaps and used in both Tekton Pipelines and Tekton Pipelines Resolvers."
-config-leader-election:
+#@schema/desc "Leader election configuration stored in the `config-leader-election-controller` ConfigMap."
+config-leader-election-controller:
+  #@schema/desc "How long non-leaders will wait to try to acquire the lock; 15 seconds is the value used by core Kubernetes controllers."
+  lease-duration: "60s"
+  #@schema/desc "How long a leader will try to renew the lease before giving up; 10 seconds is the value used by core Kubernetes controllers."
+  renew-deadline: "40s"
+  #@schema/desc "How long the leader election client waits between tries of actions; 2 seconds is the value used by core Kubernetes controllers."
+  retry-period: "10s"
+  #@schema/desc "The number of buckets used to partition key space of each Reconciler. If this number is M and the replica number of the controller is N, the N replicas will compete for the M buckets. The owner of a bucket will take care of the reconciling for the keys partitioned into that bucket. The maximum value of at this time is 10."
+  buckets: "1"
+
+#@schema/desc "Leader election configuration stored in the `config-leader-election-events` ConfigMap."
+config-leader-election-events:
+  #@schema/desc "How long non-leaders will wait to try to acquire the lock; 15 seconds is the value used by core Kubernetes controllers."
+  lease-duration: "60s"
+  #@schema/desc "How long a leader will try to renew the lease before giving up; 10 seconds is the value used by core Kubernetes controllers."
+  renew-deadline: "40s"
+  #@schema/desc "How long the leader election client waits between tries of actions; 2 seconds is the value used by core Kubernetes controllers."
+  retry-period: "10s"
+  #@schema/desc "The number of buckets used to partition key space of each Reconciler. If this number is M and the replica number of the controller is N, the N replicas will compete for the M buckets. The owner of a bucket will take care of the reconciling for the keys partitioned into that bucket. The maximum value of at this time is 10."
+  buckets: "1"
+
+#@schema/desc "Leader election configuration stored in the `config-leader-election-webhook` ConfigMap."
+config-leader-election-webhook:
+  #@schema/desc "How long non-leaders will wait to try to acquire the lock; 15 seconds is the value used by core Kubernetes controllers."
+  lease-duration: "60s"
+  #@schema/desc "How long a leader will try to renew the lease before giving up; 10 seconds is the value used by core Kubernetes controllers."
+  renew-deadline: "40s"
+  #@schema/desc "How long the leader election client waits between tries of actions; 2 seconds is the value used by core Kubernetes controllers."
+  retry-period: "10s"
+  #@schema/desc "The number of buckets used to partition key space of each Reconciler. If this number is M and the replica number of the controller is N, the N replicas will compete for the M buckets. The owner of a bucket will take care of the reconciling for the keys partitioned into that bucket. The maximum value of at this time is 10."
+  buckets: "1"
+
+#@schema/desc "Leader election configuration stored in the `config-leader-election-resolvers` ConfigMap."
+config-leader-election-resolvers:
   #@schema/desc "How long non-leaders will wait to try to acquire the lock; 15 seconds is the value used by core Kubernetes controllers."
   lease-duration: "60s"
   #@schema/desc "How long a leader will try to renew the lease before giving up; 10 seconds is the value used by core Kubernetes controllers."
@@ -129,6 +165,9 @@ config-observability:
   #@schema/desc "Duration type for the PipelineRun metrics. Histogram value isn’t available when the `pipelinerun` level is selected."
   #@schema/validation one_of=["histogram", "lastvalue"]
   metrics.pipelinerun.duration-type: "histogram"
+  #@schema/desc "Whether to include the reason as part of the count metrics for failed PipelineRuns and TaskRuns."
+  #@schema/validation one_of=["true", "false"]
+  metrics.count.enable-reason: "false"
 
 #@schema/desc "Tracing configuration stored in the `config-tracing` ConfigMap."
 config-tracing:
@@ -190,7 +229,17 @@ feature-flags:
   #@schema/desc "Setting this flag will determine the upper limit of each task result. This flag is optional and only associated with the previous flag, `results-from`. When `results-from` is set to `sidecar-logs`, this flag can be used to configure the upper limit of a task result."
   max-result-size: "4096"
   #@schema/desc "Setting this flag to `true` will limit privileges for containers injected by Tekton into TaskRuns. This allows TaskRuns to run in namespaces with `restricted` pod security standards. Not all Kubernetes implementations support this option."
+  #@schema/validation one_of=["true", "false"]
   set-security-context: "false"
+  #@schema/desc "Setting this flag to `true` will keep pod on cancellation allowing examination of the logs on the pods from cancelled taskruns."
+  #@schema/validation one_of=["true", "false"]
+  keep-pod-on-cancel: "false"
+  #@schema/desc "Setting this flag to `true` will enable the CEL evaluation in WhenExpression."
+  #@schema/validation one_of=["true", "false"]
+  enable-cel-in-whenexpression: "false"
+  #@schema/desc "Setting this flag to `true` will enable the use of StepActions in Steps. This feature is in preview mode and not implemented yet. Please check #7259 for updates."
+  #@schema/validation one_of=["true", "false"]
+  enable-step-actions: "false"
 
 #@schema/desc "Configuration for the Tekton Resolvers, responsible for resolving requests for Tasks and Pipelines from remote locations."
 resolvers:

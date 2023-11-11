@@ -1,7 +1,22 @@
 #@ load("@ytt:data", "data")
 #@ load("@ytt:overlay", "overlay")
 
-#@overlay/match by=overlay.subset({"kind":"ConfigMap", "metadata":{"name":"config-leader-election"}}), expects=2
+#@overlay/match by=overlay.subset({"kind":"ConfigMap", "metadata":{"name":"config-leader-election-controller"}}), expects=1
 ---
 #@overlay/replace
-data: #@ data.values["config-leader-election"]
+data: #@ data.values["config-leader-election-controller"]
+
+#@overlay/match by=overlay.subset({"kind":"ConfigMap", "metadata":{"name":"config-leader-election-events"}}), expects=1
+---
+#@overlay/replace
+data: #@ data.values["config-leader-election-events"]
+
+#@overlay/match by=overlay.subset({"kind":"ConfigMap", "metadata":{"name":"config-leader-election-webhook"}}), expects=1
+---
+#@overlay/replace
+data: #@ data.values["config-leader-election-webhook"]
+
+#@overlay/match by=overlay.subset({"kind":"ConfigMap", "metadata":{"name":"config-leader-election-resolvers"}}), expects=1
+---
+#@overlay/replace
+data: #@ data.values["config-leader-election-resolvers"]

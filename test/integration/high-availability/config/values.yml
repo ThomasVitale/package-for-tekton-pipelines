@@ -12,7 +12,13 @@ stringData:
       resolvers:
         replicas: 3
 
-    config-leader-election:
+    config-leader-election-controller:
+      lease-duration: "60s"
+      renew-deadline: "40s"
+      retry-period: "10s"
+      buckets: "3"
+    
+    config-leader-election-resolvers:
       lease-duration: "60s"
       renew-deadline: "40s"
       retry-period: "10s"
