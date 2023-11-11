@@ -13,3 +13,6 @@ spec:
             #@overlay/match by="name"
             - name: ARTIFACT_HUB_API
               value: #@ data.values.controllers.resolvers.artifact_hub_url
+            #@overlay/match by="name"
+            - name: TEKTON_HUB_API
+              value: #@ data.values.controllers.resolvers.tekton_hub_url

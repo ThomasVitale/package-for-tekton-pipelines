@@ -76,6 +76,9 @@ config-observability:
     pipelinerun:
       level: "pipelinerun"
       duration-type: "histogram"
+    
+    count:
+      enable-reason: "true"
 ```
 
 For more information, check the Tekton Pipelines documentation for [metrics](https://tekton.dev/docs/pipelines/metrics).

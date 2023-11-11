@@ -102,6 +102,7 @@ The Tekton Pipelines package has the following configurable properties.
 | `controllers.pipelines.replicas` | `1` | The number of replicas for the `tekton-pipelines-controller` Deployment. In order to enable high availability, it should be greater than 1. |
 | `controllers.resolvers.replicas` | `1` | The number of replicas for the `tekton-pipelines-remote-resolvers` Deployment. In order to enable high availability, it should be greater than 1. |
 | `controllers.resolvers.artifact_hub_url` | `https://artifacthub.io/` | The Artifact Hub API used by the Hub Resolver to resolve remote pipelines and tasks. |
+| `controllers.resolvers.tekton_hub_url` | `https://api.hub.tekton.dev/` | The Tekton Hub API used by the Hub Resolver to resolve remote pipelines and tasks. |
 | `webhook.minReplicas` | `1` | The minimum number of replicas as controlled by a HorizontalPodAutoscaler. In order to enable high availability, it should be greater than 1. |
 | `opentelemetry.exporter.jaeger.username` | `""` | The username to access the distributed tracing backend. Optional. |
 | `opentelemetry.exporter.jaeger.password` | `""` | The password/token to authenticate with the distributed tracing backend. Optional. |
@@ -126,14 +127,41 @@ Events configuration stored in the `config-events` ConfigMap.
 |-------|-------------------|-------------|
 | `config-events.sink` | `""` | CloudEvents sink to be used for TaskRun, PipelineRun, and CustomRun. If no sink is specified, no CloudEvent is generated. |
 
-Leader election configuration stored in the `config-leader-election` ConfigMaps.
+Leader election configuration stored in the `config-leader-election-controller` ConfigMap.
 
 | Config | Default | Description |
 |-------|-------------------|-------------|
-| `config-leader-election.lease-duration` | `60s` | How long non-leaders will wait to try to acquire the lock; 15 seconds is the value used by core Kubernetes controllers. |
-| `config-leader-election.renew-deadline` | `40s` | How long a leader will try to renew the lease before giving up; 10 seconds is the value used by core Kubernetes controllers. |
-| `config-leader-election.retry-period` | `10s` | How long the leader election client waits between tries of actions; 2 seconds is the value used by core Kubernetes controllers. |
-| `config-leader-election.buckets` | `1` | Yhe number of buckets used to partition key space of each Reconciler. If this number is M and the replica number of the controller is N, the N replicas will compete for the M buckets. The owner of a bucket will take care of the reconciling for the keys partitioned into that bucket. The maximum value of at this time is 10. |
+| `config-leader-election-controller.lease-duration` | `60s` | How long non-leaders will wait to try to acquire the lock; 15 seconds is the value used by core Kubernetes controllers. |
+| `config-leader-election-controller.renew-deadline` | `40s` | How long a leader will try to renew the lease before giving up; 10 seconds is the value used by core Kubernetes controllers. |
+| `config-leader-election-controller.retry-period` | `10s` | How long the leader election client waits between tries of actions; 2 seconds is the value used by core Kubernetes controllers. |
+| `config-leader-election-controller.buckets` | `1` | Yhe number of buckets used to partition key space of each Reconciler. If this number is M and the replica number of the controller is N, the N replicas will compete for the M buckets. The owner of a bucket will take care of the reconciling for the keys partitioned into that bucket. The maximum value of at this time is 10. |
+
+Leader election configuration stored in the `config-leader-election-events` ConfigMap.
+
+| Config | Default | Description |
+|-------|-------------------|-------------|
+| `config-leader-election-events.lease-duration` | `60s` | How long non-leaders will wait to try to acquire the lock; 15 seconds is the value used by core Kubernetes controllers. |
+| `config-leader-election-events.renew-deadline` | `40s` | How long a leader will try to renew the lease before giving up; 10 seconds is the value used by core Kubernetes controllers. |
+| `config-leader-election-events.retry-period` | `10s` | How long the leader election client waits between tries of actions; 2 seconds is the value used by core Kubernetes controllers. |
+| `config-leader-election-events.buckets` | `1` | Yhe number of buckets used to partition key space of each Reconciler. If this number is M and the replica number of the controller is N, the N replicas will compete for the M buckets. The owner of a bucket will take care of the reconciling for the keys partitioned into that bucket. The maximum value of at this time is 10. |
+
+Leader election configuration stored in the `config-leader-election-webhook` ConfigMap.
+
+| Config | Default | Description |
+|-------|-------------------|-------------|
+| `config-leader-election-webhook.lease-duration` | `60s` | How long non-leaders will wait to try to acquire the lock; 15 seconds is the value used by core Kubernetes controllers. |
+| `config-leader-election-webhook.renew-deadline` | `40s` | How long a leader will try to renew the lease before giving up; 10 seconds is the value used by core Kubernetes controllers. |
+| `config-leader-election-webhook.retry-period` | `10s` | How long the leader election client waits between tries of actions; 2 seconds is the value used by core Kubernetes controllers. |
+| `config-leader-election-webhook.buckets` | `1` | Yhe number of buckets used to partition key space of each Reconciler. If this number is M and the replica number of the controller is N, the N replicas will compete for the M buckets. The owner of a bucket will take care of the reconciling for the keys partitioned into that bucket. The maximum value of at this time is 10. |
+
+Leader election configuration stored in the `config-leader-election-resolvers` ConfigMap.
+
+| Config | Default | Description |
+|-------|-------------------|-------------|
+| `config-leader-election-resolvers.lease-duration` | `60s` | How long non-leaders will wait to try to acquire the lock; 15 seconds is the value used by core Kubernetes controllers. |
+| `config-leader-election-resolvers.renew-deadline` | `40s` | How long a leader will try to renew the lease before giving up; 10 seconds is the value used by core Kubernetes controllers. |
+| `config-leader-election-resolvers.retry-period` | `10s` | How long the leader election client waits between tries of actions; 2 seconds is the value used by core Kubernetes controllers. |
+| `config-leader-election-resolvers.buckets` | `1` | Yhe number of buckets used to partition key space of each Reconciler. If this number is M and the replica number of the controller is N, the N replicas will compete for the M buckets. The owner of a bucket will take care of the reconciling for the keys partitioned into that bucket. The maximum value of at this time is 10. |
 
 Logging configuration stored in the `config-logging` ConfigMaps.
 
@@ -154,6 +182,7 @@ Observability configuration stored in the `config-observability` ConfigMaps.
 | `config-observability.metrics.taskrun.duration-type` | `histogram` | Duration type for the TaskRun metrics. Histogram value isn’t available when the `taskrun` level is selected. Supported values: `histogram`, `lastvalue`. |
 | `config-observability.metrics.pipelinerun.level` | `pipeline` | Level for the PipelineRun metrics controlling which labels are included: (pipelinerun, pipeline, namespace), (pipeline, namespace), (namespace). Supported values: `pipelinerun`, `pipeline`, `namespace`. |
 | `config-observability.metrics.pipelinerun.duration-type` | `histogram` | Duration type for the PipelineRun metrics. Histogram value isn’t available when the `pipelinerun` level is selected. Supported values: `histogram`, `lastvalue`. |
+| `config-observability.metrics.count.enable-reason` | `false` | Whether to include the reason as part of the count metrics for failed PipelineRuns and TaskRuns. |
 
 Tracing configuration stored in the `config-tracing` ConfigMaps.
 
@@ -180,6 +209,9 @@ Feature flags configuration stored in the `feature-flags` ConfigMap.
 | `feature-flags.results-from` | `termination-message` | Setting this flag will determine how Tekton pipelines will handle extracting results from the task. Acceptable values are `termination-message` or `sidecar-logs`. `sidecar-logs` is an experimental feature and thus should still be considered an alpha feature. |
 | `feature-flags.max-result-size` | `4096` | Setting this flag will determine the upper limit of each task result. This flag is optional and only associated with the previous flag, `results-from`. When `results-from` is set to `sidecar-logs`, this flag can be used to configure the upper limit of a task result. |
 | `feature-flags.set-security-context` | `false` | Setting this flag to `true` will limit privileges for containers injected by Tekton into TaskRuns. This allows TaskRuns to run in namespaces with `restricted` pod security standards. Not all Kubernetes implementations support this option. |
+| `feature-flags.keep-pod-on-cancel` | `false` | Setting this flag to `true` will keep pod on cancellation allowing examination of the logs on the pods from cancelled taskruns. |
+| `feature-flags.enable-cel-in-whenexpression` | `false` | Setting this flag to `true` will enable the CEL evaluation in WhenExpression. |
+| `feature-flags.enable-step-actions` | `false` | Setting this flag to `true` will enable the use of StepActions in Steps. This feature is in preview mode and not implemented yet. Please check #7259 for updates. |
 
 Configuration for the bundle resolver stored in the `bundleresolver-config` ConfigMap.
 
