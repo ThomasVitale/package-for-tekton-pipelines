@@ -60,6 +60,8 @@ config-defaults:
   default-forbidden-env: ""
   #@schema/desc "The default resolver type to be used in the cluster."
   default-resolver-type: ""
+  #@schema/desc "The default duration to wait before requeuing the TaskRun to retry, specifying 0 here is equivalent to fail fast. Possible values could be 1m, 5m, 10s, 1h, etc." 
+  default-imagepullbackoff-timeout: "5m"
 
 #@schema/desc "Events configuration stored in the `config-events` ConfigMap."
 config-events:

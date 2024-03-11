@@ -120,6 +120,7 @@ Default configuration stored in the `config-defaults` ConfigMap.
 | `config-defaults.default-max-matrix-combinations-count` | `256` | Maximum number of combinations from a Matrix, if none is specified. |
 | `config-defaults.default-forbidden-env` | `""` | Comma seperated environment variables that cannot be overridden by PodTemplate. |
 | `config-defaults.default-resolver-type` | `""` | The default resolver type to be used in the cluster. |
+| `config-defaults.default-imagepullbackoff-timeout` | `5m` | The default duration to wait before requeuing the TaskRun to retry, specifying 0 here is equivalent to fail fast. Possible values could be 1m, 5m, 10s, 1h, etc. |
 
 Events configuration stored in the `config-events` ConfigMap.
 
