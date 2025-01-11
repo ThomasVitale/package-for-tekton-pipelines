@@ -6,6 +6,9 @@
 [![The Apache 2.0 license badge](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Follow us on Twitter](https://img.shields.io/static/v1?label=Twitter&message=Follow&color=1DA1F2)](https://twitter.com/kadrasIO)
 
+> **Warning**
+> This package has been archived. If you need a pipeline service, you can choose GitHub Actions, supported by Kadras, or bring your own pipeline service package.
+
 A Carvel package for [Tekton Pipelines](https://tekton.dev/docs/pipelines), a cloud-native solution for building CI/CD systems.
 
 ## 🚀&nbsp; Getting Started
